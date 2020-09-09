@@ -19,7 +19,7 @@ return [
     */
 
     'defaults' => [
-        'modules_namespace'   => 'Modules',
+        'modules_namespace'   => 'Modules\\',
         'modules_path'        => './modules/',
         'namespace'           => '',
         'path'                => './app/',

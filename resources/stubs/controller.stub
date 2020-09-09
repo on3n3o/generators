@@ -4,7 +4,7 @@ namespace {{namespace}};
 
 use {{rootNamespace}}Models\{{model}};
 use Illuminate\Http\Request;
-use {{rootNamespace}}Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 
 class {{class}} extends Controller
 {

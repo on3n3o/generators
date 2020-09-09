@@ -353,6 +353,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
+        \Log::debug($rootNamespace . config('generators.' . strtolower($this->type) . '_namespace'));
         return $rootNamespace . config('generators.' . strtolower($this->type) . '_namespace');
     }
 

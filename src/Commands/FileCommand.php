@@ -146,8 +146,13 @@ class FileCommand extends GeneratorCommand
         // Foo
         $stub = str_replace('{{namespaceWithoutApp}}', $this->getNamespace($name, false), $stub);
 
-        // App\
-        $stub = str_replace('{{rootNamespace}}', $this->getLaravel()->getNamespace(), $stub);
+        if((bool) $this->optionModule()){
+            // Modules\ModuleName
+            $stub = str_replace('{{rootNamespace}}', config('generators.defaults.modules_namespace') . $this->optionModule() . '\\', $stub);
+        }else{
+            // App\
+            $stub = str_replace('{{rootNamespace}}', $this->getLaravel()->getNamespace(), $stub);
+        }
 
         // Bar
         $stub = str_replace('{{class}}', $this->getClassName(), $stub);
@@ -214,7 +219,15 @@ class FileCommand extends GeneratorCommand
 
         $pieces = array_map('ucfirst', explode('/', $path));
 
-        $namespace = ($withApp === true ? $this->getLaravel()->getNamespace() : '') . implode('\\', $pieces);
+        if($withApp === true){
+            if((bool) $this->optionModule()){
+                $namespace = config('generators.defaults.modules_namespace') . $this->optionModule() . '\\' . implode('\\', $pieces);
+            }else{
+                $namespace = $this->getLaravel()->getNamespace() . implode('\\', $pieces);
+            }
+        }else{
+            $namespace = implode('\\', $pieces);
+        }
 
         $namespace = rtrim(ltrim(str_replace('\\\\', '\\', $namespace), '\\'), '\\');
 

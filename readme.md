@@ -181,7 +181,7 @@ php artisan generate:seed BarTableSeeder --module=Bar
 php artisan generate:resource bar
 php artisan generate:resource foo.bar
 php artisan generate:resource foo.bar_baz
-php artisan generate:resource bar --schema="title:string, body:text, slug:string:unique, published_at:date"
+php artisan generate:resource foo.bar_baz --schema="title:string, body:text, slug:string:unique, published_at:date" --module=Bar
 php artisan generate:resource articles --controller=admin --module=Bar
 ```
 
