@@ -90,7 +90,11 @@ class MigrationPivotCommand extends GeneratorCommand
      */
     protected function getPath($name = null)
     {
-        return './database/migrations/' . date('Y_m_d_His') . '_create_' . $this->getPivotTableName() . '_pivot_table.php';
+        $path = 'database/migrations/' . date('Y_m_d_His') . '_create_' . $this->getPivotTableName() . '_pivot_table.php';
+        if((bool) $this->optionModule()){
+            $path = config('generators.defaults.modules_path') . $this->optionModule() . '/' . $path;
+        } 
+        return './' . $path;
     }
 
     /**

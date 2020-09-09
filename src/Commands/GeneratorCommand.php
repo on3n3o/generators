@@ -60,6 +60,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
             '--force' => $this->optionForce(), // force override
             '--stub'  => $this->optionStub(), // custom stub name
             '--name'  => $this->optionName(), // custom name for file
+            '--module' => $this->optionModule(), //custom module
         ];
 
         // extra custom option
@@ -413,6 +414,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
     protected function getOptions()
     {
         return [
+            ['module', null, InputOption::VALUE_OPTIONAL, 'Create inside module'],
             ['plain', null, InputOption::VALUE_NONE, 'Generate an empty class.'],
             ['force', null, InputOption::VALUE_NONE, 'Warning: Override file if it already exist'],
             [

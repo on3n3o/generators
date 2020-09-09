@@ -68,7 +68,8 @@ class MigrationCommand extends GeneratorCommand
                 'name'     => $this->getModelName(),
                 '--plain'  => $this->optionPlain(),
                 '--force'  => $this->optionForce(),
-                '--schema' => $this->optionSchema()
+                '--schema' => $this->optionSchema(),
+                '--module' => $this->optionModule(),
             ]);
         }
     }
@@ -173,7 +174,11 @@ class MigrationCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        return './database/migrations/' . date('Y_m_d_His') . '_' . $this->argumentName() . '.php';
+        $path = 'database/migrations/' . date('Y_m_d_His') . '_' . $this->argumentName() . '.php';
+        if((bool) $this->optionModule()){
+            $path = config('generators.defaults.modules_path') . $this->optionModule() . '/' . $path;
+        } 
+        return './' . $path;
     }
 
     /**

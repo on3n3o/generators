@@ -122,7 +122,7 @@ Run `php artisan` command to see the new commands in the `generate:*` section
 php artisan generate:model bar
 php artisan generate:model foo.bar --plain
 php artisan generate:model bar --force
-php artisan generate:model bar --migration --schema="title:string, body:text"
+php artisan generate:model bar --migration --schema="title:string, body:text" --module=Bar
 ```
 
 ### Views
@@ -131,7 +131,7 @@ php artisan generate:model bar --migration --schema="title:string, body:text"
 php artisan generate:view foo
 php artisan generate:view foo.bar
 php artisan generate:view foo.bar --stub=view_show
-php artisan generate:view foo.bar --name=foo_bar
+php artisan generate:view foo.bar --name=foo_bar --module=Bar
 ```
 
 ### Controllers
@@ -141,7 +141,7 @@ php artisan generate:controller foo
 php artisan generate:controller foo.bar
 php artisan generate:controller fooBar
 php artisan generate:controller bar --plain
-php artisan generate:controller BarController --plain
+php artisan generate:controller BarController --plain --module=Bar
 ```
 
 - The `Controller` postfix will be added if needed.
@@ -155,7 +155,7 @@ This is very similar as [Jeffrey Way's](https://github.com/laracasts/Laravel-5-G
 php artisan generate:migration create_users_table
 php artisan generate:migration create_users_table --plain
 php artisan generate:migration create_users_table --force
-php artisan generate:migration create_posts_table --schema="title:string, body:text, slug:string:unique, published_at:date"
+php artisan generate:migration create_posts_table --schema="title:string, body:text, slug:string:unique, published_at:date" --module=Bar
 ```
 
 ### Pivot Tables
@@ -163,14 +163,14 @@ php artisan generate:migration create_posts_table --schema="title:string, body:t
 This is very similar as [Jeffrey Way's](https://github.com/laracasts/Laravel-5-Generators-Extended)
 
 ```
-php artisan generate:migration:pivot tags posts
+php artisan generate:migration:pivot tags posts --module=Bar
 ```
 
 ### Database Seeders
 
 ```
-php artisan generate:seed bar
-php artisan generate:seed BarTableSeeder
+php artisan generate:seed bar 
+php artisan generate:seed BarTableSeeder --module=Bar
 ```
 
 - The `TableSeeder` suffix will be added if needed.
@@ -182,7 +182,7 @@ php artisan generate:resource bar
 php artisan generate:resource foo.bar
 php artisan generate:resource foo.bar_baz
 php artisan generate:resource bar --schema="title:string, body:text, slug:string:unique, published_at:date"
-php artisan generate:resource articles --controller=admin
+php artisan generate:resource articles --controller=admin --module=Bar
 ```
 
 - This will generate a Bar model, BarsController, resources views (in config), create_bars_table migration, BarTableSeeder

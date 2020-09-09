@@ -108,6 +108,15 @@ class FileCommand extends GeneratorCommand
         $withName = (bool) $this->option('name');
 
         $path = $this->settings['path'];
+        
+        if((bool) $this->option('module')){
+            /**
+             * Strip path ./app/ or ./ from path and replace it with modules path
+             */
+            $path = str_replace(config('generators.defaults.path'), '', $path);
+            $path = str_replace('./', '', $path);
+            $path = config('generators.defaults.modules_path') . $this->option('module') . '/' . $path;
+        }
 
         if ($this->settingsDirectoryNamespace() === true) {
             $path .= $this->getArgumentPath($withName);

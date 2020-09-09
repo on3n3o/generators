@@ -43,7 +43,8 @@ class ModelCommand extends GeneratorCommand
             $this->call('generate:migration', [
                 'name'     => $name,
                 '--model'  => false,
-                '--schema' => $this->option('schema')
+                '--schema' => $this->option('schema'),
+                '--module' => $this->optionModule()
             ]);
         }
     }

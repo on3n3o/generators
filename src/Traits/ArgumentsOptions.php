@@ -66,6 +66,14 @@ trait ArgumentsOptions
     }
 
     /**
+     * Get the value for the module option
+     */
+    protected function optionModule()
+    {
+        return $this->option('module');
+    }
+
+    /**
      * Get the value for the extra option
      */
     protected function optionExtra()

@@ -162,7 +162,8 @@ class ResourceCommand extends GeneratorCommand
         if ($this->confirm("Create a migration ($name) for the $this->resource resource?")) {
             $this->callCommand('migration', $name, [
                 '--model'  => false,
-                '--schema' => $this->option('schema')
+                '--schema' => $this->option('schema'),
+                '--module' => $this->optionModule(),
             ]);
         }
     }
@@ -195,6 +196,7 @@ class ResourceCommand extends GeneratorCommand
                 'name'   => $name,
                 '--type' => 'test',
                 '--unit' => 'Unit',
+                '--module' => $this->optionModule(),
             ]);
         }
     }
@@ -254,6 +256,7 @@ class ResourceCommand extends GeneratorCommand
             '--force' => $this->optionForce(),
             '--plain' => $this->optionPlain(),
             '--stub'  => ($stub ?: $this->optionStub()),
+            '--module' => $this->optionModule(),
         ]));
     }
 
