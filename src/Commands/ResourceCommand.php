@@ -41,6 +41,7 @@ class ResourceCommand extends GeneratorCommand
         $this->resource = $this->getResourceOnly();
         $this->settings = config('generators.defaults');
 
+        $this->callServiceProvider();
         $this->callModel();
         $this->callView();
         $this->callRepository();
@@ -59,6 +60,15 @@ class ResourceCommand extends GeneratorCommand
         $this->info('All Done!');
         $this->info('Remember to add ' . "`Route::resource('" . str_replace('_', '-',
                 $this->getCollectionName()) . "', '" . $this->getResourceControllerName() . "');`" . ' in `routes\\web.php`');
+    }
+
+    private function callServiceProvider(): void
+    {
+        if((bool) $this->optionModule()){
+            if ($this->confirm("Create a " . $this->optionModule() . "ServiceProvider?")) {
+                $this->callCommandFile('service-provider');
+            }
+        }
     }
 
     /**

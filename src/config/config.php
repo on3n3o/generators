@@ -115,6 +115,11 @@ return [
             'postfix'             => 'Test',
             'path'                => './tests/',
         ],
+        'service-provider' => [
+            'namespace' => '\Providers', 
+            'path' => './app/Providers/',
+            'postfix' => 'ServiceProvider',
+        ]
     ],
 
     /*
@@ -174,5 +179,6 @@ return [
         'contract'               => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/contract.stub',
         'factory'                => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/factory.stub',
         'test'                   => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/test.stub',
+        'service-provider'       => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/service_provider.stub',
     ]
 ];

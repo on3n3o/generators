@@ -50,6 +50,9 @@ class FileCommand extends GeneratorCommand
             case 'seed':
                 $name = $this->getSeedName($name);
                 break;
+            case 'service-provider':
+                $name = $this->getModelName();
+                break;
         }
 
         // overide the name
@@ -197,6 +200,9 @@ class FileCommand extends GeneratorCommand
 
         // contract namespace
         $stub = str_replace('{{contractNamespace}}', $this->getContractNamespace(), $stub);
+
+        // Module
+        $stub = str_replace('{{module}}', $this->optionModule() ?? '', $stub);
 
         return $stub;
     }

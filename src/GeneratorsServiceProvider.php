@@ -25,6 +25,7 @@ use Bpocallaghan\Generators\Commands\MiddlewareCommand;
 use Bpocallaghan\Generators\Commands\NotificationCommand;
 use Bpocallaghan\Generators\Commands\MigrationPivotCommand;
 use Bpocallaghan\Generators\Commands\EventGenerateCommand;
+use Bpocallaghan\Generators\Commands\ServiceProviderCommand;
 
 class GeneratorsServiceProvider extends ServiceProvider
 {
@@ -84,6 +85,7 @@ class GeneratorsServiceProvider extends ServiceProvider
 
         $this->registerCommand(ResourceCommand::class, 'resource');
         $this->registerCommand(FileCommand::class, 'file');
+        $this->registerCommand(ServiceProviderCommand::class, 'service-provider');
     }
 
     /**
