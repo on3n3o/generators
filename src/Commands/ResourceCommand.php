@@ -62,6 +62,9 @@ class ResourceCommand extends GeneratorCommand
                 $this->getCollectionName()) . "', '" . $this->getResourceControllerName() . "');`" . ' in `routes\\web.php`');
     }
 
+    /**
+     * Call the generate:service-provider command
+     */
     private function callServiceProvider(): void
     {
         if((bool) $this->optionModule()){

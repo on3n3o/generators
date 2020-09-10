@@ -38,6 +38,7 @@ php artisan generate:factory
 php artisan generate:test
 php artisan generate:file
 php artisan generate:exception
+php artisan generate:service-provider
 ```
 
 ### Option for all the commands
@@ -113,6 +114,7 @@ Run `php artisan` command to see the new commands in the `generate:*` section
 - [Middleware](#middleware)
 - [Factory](#factory)
 - [Test](#test)
+- [Service Provider](#service-provider)
 - [File](#file)
 - [Configuration](#configuration)
 
@@ -264,6 +266,12 @@ php artisan generate:test Post --unit
 php artisan generate:test Auth\LoginTest
 ```
 This will generate Feature\UserCanLogin and Unit\PostTest and Unit\Auth\LoginTest files.
+
+### Service Provider
+```
+php artisan generate:service-provider User --module=User
+```
+This will generate Providers\UserServiceProvider files.
 
 ### Configuration
 
