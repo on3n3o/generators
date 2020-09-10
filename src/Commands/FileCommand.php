@@ -53,6 +53,9 @@ class FileCommand extends GeneratorCommand
             case 'service-provider':
                 $name = $this->getModelName();
                 break;
+            case 'request':
+                $name = $this->getModelName();
+                break;
         }
 
         // overide the name

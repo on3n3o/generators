@@ -119,7 +119,12 @@ return [
             'namespace' => '\Providers', 
             'path' => './app/Providers/',
             'postfix' => 'ServiceProvider',
-        ]
+        ],
+        'request' => [
+            'namespace' => '\Http\Requests', 
+            'path' => './app/Http/Requests/',
+            'postfix' => 'Request',
+        ],
     ],
 
     /*
@@ -134,6 +139,20 @@ return [
         //'view_edit'        => 'edit',
         'view_show'        => 'show',
         'view_create_edit' => 'create_edit',
+    ],
+
+     /*
+    |--------------------------------------------------------------------------
+    | Custom Requests [stub_key | name of the file]
+    |--------------------------------------------------------------------------
+    */
+
+    'custom_requests' => [
+        'request_index'       => 'index',
+        'request_create'      => 'create',
+        'request_show'        => 'show',
+        'request_edit'        => 'edit',
+        'request_delete'        => 'delete',
     ],
 
     /*

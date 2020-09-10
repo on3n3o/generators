@@ -46,6 +46,7 @@ class ResourceCommand extends GeneratorCommand
         $this->callView();
         $this->callRepository();
         $this->callController();
+        $this->callRequest();
         $this->callMigration();
         $this->callSeed();
         $this->callTest();
@@ -161,6 +162,26 @@ class ResourceCommand extends GeneratorCommand
                 else {
                     $this->callCommandFile('controller', $name, 'controller');
                 }
+            }
+        }
+    }
+
+     /**
+     * Generate the resource custom requests
+     */
+    private function callRequest(): void
+    {
+        \Log::debug($this->option('view'));
+        if ($this->confirm("Create custom requests for the " . $this->getResourceControllerName() . "?")) {
+            $requests = config('generators.custom_requests');
+            foreach ($requests as $key => $name) {
+                $resource = $this->argument('resource');
+                if (Str::contains($resource, '.')) {
+                    $resource = str_replace('.', '/', $resource);
+                }
+
+                $this->callCommandFile('request', null,
+                    $key . $this->option('view'), ['--name' => $name]);
             }
         }
     }
