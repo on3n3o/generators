@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 
 class {{class}} extends ServiceProvider
 {
-    protected $prefix = '{{module}}\{{model}}';
+    protected $prefix = '{{module}}';
 
     /**
      * Register services.

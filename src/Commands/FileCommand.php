@@ -51,7 +51,7 @@ class FileCommand extends GeneratorCommand
                 $name = $this->getSeedName($name);
                 break;
             case 'service-provider':
-                $name = $this->getModelName();
+                $name = $this->optionModule() ?? $this->getModelName();
                 break;
             case 'request':
                 $name = $this->getModelName();

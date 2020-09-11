@@ -11,25 +11,32 @@ class {{class}} extends Controller
 	/**
 	 * Display a listing of {{resource}}.
 	 */
-	public function index()
+	public function index({{model}}IndexRequest $request)
 	{
-		// 
+		if($request->expectsJson()){
+			return response()->json([
+				'count' => {{model}}::count(),
+				'rows' => {{model}}::get(),
+			]);
+		}
+		return view('{{module}}::{{viewPath}}.index');
 	}
 
 	/**
 	 * Show the form for creating a new {{resource}}.
 	 */
-	public function create()
+	public function create({{model}}CreateRequest $request)
 	{
-		//
+		return view('{{module}}::{{viewPath}}.create');
 	}
 
 	/**
 	 * Store a newly created {{resource}} in storage.
 	 */
-	public function store()
+	public function store({{model}}StoreRequest $request)
 	{
-		//
+		${{resource}} = {{model}}::create($request->validated());
+		return response()->json(['status' => 'ok', 'message' => 'created', 'id' => ${{resource}}->id]);
 	}
 
 	/**
@@ -37,9 +44,9 @@ class {{class}} extends Controller
 	 *
 	 * @param {{model}} ${{resource}}
 	 */
-	public function show({{model}} ${{resource}})
+	public function show({{model}}StoreRequest $request, {{model}} ${{resource}})
 	{
-		//
+		return view('{{module}}::{{viewPath}}.show', compact('{{resource}}'));
 	}
 
 	/**
@@ -47,9 +54,9 @@ class {{class}} extends Controller
 	 *
 	 * @param {{model}} ${{resource}}
      */
-    public function edit({{model}} ${{resource}})
+    public function edit({{model}}EditRequest $request, {{model}} ${{resource}})
 	{
-		//
+		return view('{{module}}::{{viewPath}}.edit', compact('{{resource}}'));
 	}
 
 	/**
@@ -57,9 +64,10 @@ class {{class}} extends Controller
 	 *
 	 * @param {{model}}  ${{resource}}
      */
-    public function update({{model}} ${{resource}})
+    public function update({{model}}UpdateRequest $request, {{model}} ${{resource}})
 	{
-		//
+		${{resource}}->update($request->validated());
+		return response()->json(['status' => 'ok', 'message' => 'updated', 'id' => ${{resource}}->id]);
 	}
 
 	/**
@@ -67,8 +75,10 @@ class {{class}} extends Controller
 	 *
 	 * @param {{model}}  ${{resource}}
 	 */
-	public function destroy({{model}} ${{resource}})
+	public function destroy({{model}}DestroyRequest $request, {{model}} ${{resource}})
 	{
-		//
+		$id = ${{resource}}->id;
+		${{resource}}->delete();
+		return response()->json(['status' => 'ok', 'message' => 'destroyed', 'id' => $id]);
 	}
 }

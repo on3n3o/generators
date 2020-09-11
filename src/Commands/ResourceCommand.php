@@ -20,7 +20,7 @@ class ResourceCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new Resource (Model, Views, Controller, Migration, Seed)';
+    protected $description = 'Create a new Resource (ServiceProvider, Model, Views, Controller, Requests, Migration, Seed)';
 
     /**
      * The type of class being generated.
@@ -171,7 +171,7 @@ class ResourceCommand extends GeneratorCommand
      */
     private function callRequest(): void
     {
-        \Log::debug($this->option('view'));
+        $modelName = $this->getModelName();
         if ($this->confirm("Create custom requests for the " . $this->getResourceControllerName() . "?")) {
             $requests = config('generators.custom_requests');
             foreach ($requests as $key => $name) {
@@ -181,7 +181,7 @@ class ResourceCommand extends GeneratorCommand
                 }
 
                 $this->callCommandFile('request', null,
-                    $key . $this->option('view'), ['--name' => $name]);
+                    $key . $this->option('view'), ['--name' => $modelName . ucfirst($name) . 'Request']);
             }
         }
     }

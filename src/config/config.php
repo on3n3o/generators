@@ -121,6 +121,7 @@ return [
             'postfix' => 'ServiceProvider',
         ],
         'request' => [
+            'directory_namespace' => true,
             'namespace' => '\Http\Requests', 
             'path' => './app/Http/Requests/',
             'postfix' => 'Request',
@@ -149,10 +150,12 @@ return [
 
     'custom_requests' => [
         'request_index'       => 'index',
-        'request_create'      => 'create',
-        'request_show'        => 'show',
-        'request_edit'        => 'edit',
-        'request_delete'        => 'delete',
+        // 'request_create'      => 'create',
+        'request_store'      => 'store',
+        // 'request_show'        => 'show',
+        // 'request_edit'        => 'edit',
+        'request_update'        => 'update',
+        'request_delete'        => 'destroy',
     ],
 
     /*
@@ -199,5 +202,12 @@ return [
         'factory'                => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/factory.stub',
         'test'                   => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/test.stub',
         'service-provider'       => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/service_provider.stub',
+        'request_index'          => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.index.stub',
+        'request_create'         => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.create.stub',
+        'request_store'          => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.store.stub',
+        'request_show'           => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.show.stub',
+        'request_edit'           => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.edit.stub',
+        'request_update'         => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.update.stub',
+        'request_delete'         => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.delete.stub',
     ]
 ];
