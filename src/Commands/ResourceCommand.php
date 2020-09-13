@@ -44,6 +44,7 @@ class ResourceCommand extends GeneratorCommand
         $this->callServiceProvider();
         $this->callModel();
         $this->callView();
+        $this->callJS();
         $this->callRepository();
         $this->callController();
         $this->callRequest();
@@ -114,6 +115,25 @@ class ResourceCommand extends GeneratorCommand
                 $this->callCommandFile('view', $this->getViewPath($resource),
                     $key . $this->option('view'), ['--name' => $name]);
             }
+        }
+    }
+
+    /**
+     * Generate the resource js
+     */
+    private function callJS(): void
+    {
+        if ($this->confirm("Create crud js files for the $this->resource resource?")) {
+            // $views = config('generators.resource_js');
+            // foreach ($views as $key => $name) {
+            //     $resource = $this->argument('resource');
+            //     if (Str::contains($resource, '.')) {
+            //         $resource = str_replace('.', '/', $resource);
+            //     }
+
+            //     $this->callCommandFile('js', null,
+            //         $key . $this->option('view'), ['--name' => $name]);
+            // }
         }
     }
 

@@ -4,7 +4,6 @@ namespace {{namespace}};
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class {{class}}
@@ -12,16 +11,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class {{class}} extends Model
 {
-    use SoftDeletes;
-
     protected $table = '{{table}}';
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        {{fillable}}
+    ];
 
-    /**
-     * Validation rules for this model
-     */
-    static public $rules = [
-        'name' => 'required|min:3:max:255',
+    protected $casts = [
+        {{casts}}
+    ];
+
+    protected $dates = [
+        {{dates}}
     ];
 }

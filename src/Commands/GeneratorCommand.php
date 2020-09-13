@@ -61,6 +61,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
             '--stub'  => $this->optionStub(), // custom stub name
             '--name'  => $this->optionName(), // custom name for file
             '--module' => $this->optionModule(), //custom module
+            '--schema' => $this->optionSchema(),
         ];
 
         // extra custom option
@@ -353,7 +354,6 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        \Log::debug($rootNamespace . config('generators.' . strtolower($this->type) . '_namespace'));
         return $rootNamespace . config('generators.' . strtolower($this->type) . '_namespace');
     }
 

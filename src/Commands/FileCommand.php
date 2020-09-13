@@ -207,6 +207,16 @@ class FileCommand extends GeneratorCommand
         // Module
         $stub = str_replace('{{module}}', $this->optionModule() ?? '', $stub);
 
+        // 'name', 'created_by',
+        $stub = str_replace('{{fillable}}', $this->getModelFillable(), $stub);
+
+        // 'meals_eaten' => 'integer'
+        // 'pushups_done' => 'boolean'
+        $stub = str_replace('{{casts}}', $this->getModelCasts(), $stub);
+
+        // created_at, payed_at
+        $stub = str_replace('{{dates}}', $this->getModelDates(), $stub);
+
         return $stub;
     }
 
@@ -272,6 +282,75 @@ class FileCommand extends GeneratorCommand
             $this->getFileName())));
     }
 
+    protected function getModelFillable()
+    {
+        $fillableArray = [];
+        $schemaArray = explode(', ', $this->optionSchema());
+        foreach($schemaArray as $schemaElement){
+            $schemaElement = explode(':', $schemaElement);
+            if(isset($schemaElement[0])){
+                $fillableArray[] = '\'' . $schemaElement[0] . '\'';
+            }
+        }
+        return implode(', ', $fillableArray);
+    }
+
+    protected function getModelCasts()
+    {
+        $casts = [
+            // migrationColumnType => cast
+            'integer' => 'integer',
+            'bigInteger' => 'integer',
+            'boolean' => 'boolean',
+            'decimal' => 'decimal:2',
+            'double' => 'double',
+            'float' => 'float',
+            'json' => 'array',
+            'jsonb' => 'array',
+            'mediumInteger' => 'integer',
+            'smallInteger' => 'integer',
+            'tinyInteger' => 'integer',
+            'unsignedBigInteger' => 'integer',
+            'unsignedDecimal' => 'decimal',
+            'unsignedInteger' => 'integer',
+            'unsignedMediumInteger' => 'integer',
+            'unsignedSmallInteger' => 'integer',
+            'unsignedTinyInteger' => 'integer',
+        ];
+        
+        $castsArray = [];
+        $schemaArray = explode(', ', $this->optionSchema());
+        foreach($schemaArray as $schemaElement){
+            $schemaElement = explode(':', $schemaElement);
+            if(isset($schemaElement[0]) && isset($schemaElement[1])){
+                $columnType = explode(',', $schemaElement[1])[0];
+                if(isset($casts[$columnType])){
+                    $castsArray[] = '\'' . $schemaElement[0] . '\' => \'' . $casts[$columnType] . '\'';
+                }
+            }
+        }
+        return implode(',' . PHP_EOL, $castsArray);
+    }
+
+    protected function getModelDates()
+    {
+        $dateCommands = collect([
+            'date', 'dateTime', 'dateTimeTz', 'softDeletes', 'softDeletesTz', 'time', 'timeTz', 'timestamp', 'timestampTz', 'year'
+        ]);
+        $datesArray = [];
+        $schemaArray = explode(', ', $this->optionSchema());
+        foreach($schemaArray as $schemaElement){
+            $schemaElement = explode(':', $schemaElement);
+            if(isset($schemaElement[0]) && isset($schemaElement[1])){
+                $columnType = explode(',', $schemaElement[1])[0];
+                if($dateCommands->contains($columnType)){
+                    $datesArray[] = '\'' . $schemaElement[0] . '\'';
+                }
+            }
+        }
+        return implode(', ', $datesArray);
+    }
+
     /**
      * Get the console command options.
      *
@@ -280,6 +359,7 @@ class FileCommand extends GeneratorCommand
     protected function getOptions()
     {
         return array_merge([
+            ['schema', 's', InputOption::VALUE_OPTIONAL, 'Optional schema to be attached to the migration', null],
             [
                 'type',
                 null,

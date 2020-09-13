@@ -126,6 +126,12 @@ return [
             'path' => './app/Http/Requests/',
             'postfix' => 'Request',
         ],
+        'js' => [
+            'directory_namespace' => true,
+            'directory_format'    => 'strtolower',
+            'path'                => './resources/js/',
+            'file_type'           => '.js',
+        ],
     ],
 
     /*
@@ -209,5 +215,6 @@ return [
         'request_edit'           => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.edit.stub',
         'request_update'         => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.update.stub',
         'request_delete'         => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.delete.stub',
+        'js'                     => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/js.stub',
     ]
 ];
