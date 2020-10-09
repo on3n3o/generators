@@ -41,23 +41,23 @@ class ResourceCommand extends GeneratorCommand
         $this->resource = $this->getResourceOnly();
         $this->settings = config('generators.defaults');
 
-        $this->callServiceProvider();
-        $this->callModel();
-        $this->callView();
-        $this->callJS();
-        $this->callRepository();
+        // $this->callServiceProvider();
+        // $this->callModel();
+        // $this->callView();
+        // $this->callJS();
+        // $this->callRepository();
         $this->callController();
-        $this->callRequest();
-        $this->callMigration();
-        $this->callSeed();
-        $this->callTest();
-        $this->callFactory();
-        $this->callMigrate();
+        // $this->callRequest();
+        // $this->callMigration();
+        // $this->callSeed();
+        // $this->callTest();
+        // $this->callFactory();
+        // $this->callMigrate();
 
-        // confirm dump autoload
-        if ($this->confirm("Run 'composer dump-autoload'?")) {
-            $this->composer->dumpAutoloads();
-        }
+        // // confirm dump autoload
+        // if ($this->confirm("Run 'composer dump-autoload'?")) {
+        //     $this->composer->dumpAutoloads();
+        // }
 
         $this->info('All Done!');
         $this->info('Remember to add ' . "`Route::resource('" . str_replace('_', '-',
@@ -124,16 +124,16 @@ class ResourceCommand extends GeneratorCommand
     private function callJS(): void
     {
         if ($this->confirm("Create crud js files for the $this->resource resource?")) {
-            // $views = config('generators.resource_js');
-            // foreach ($views as $key => $name) {
-            //     $resource = $this->argument('resource');
-            //     if (Str::contains($resource, '.')) {
-            //         $resource = str_replace('.', '/', $resource);
-            //     }
+            $views = config('generators.resource_js');
+            foreach ($views as $key => $name) {
+                $resource = $this->argument('resource');
+                if (Str::contains($resource, '.')) {
+                    $resource = str_replace('.', '/', $resource);
+                }
 
-            //     $this->callCommandFile('js', null,
-            //         $key . $this->option('view'), ['--name' => $name]);
-            // }
+                $this->callCommandFile('js', null,
+                    $key . $this->option('view'), ['--name' => $name]);
+            }
         }
     }
 
@@ -201,7 +201,10 @@ class ResourceCommand extends GeneratorCommand
                 }
 
                 $this->callCommandFile('request', null,
-                    $key . $this->option('view'), ['--name' => $modelName . ucfirst($name) . 'Request']);
+                    $key . $this->option('view'), [
+                        '--name' => $modelName . ucfirst($name) . 'Request',
+                        '--schema' => $this->optionSchema()
+                    ]);
             }
         }
     }

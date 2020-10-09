@@ -217,7 +217,22 @@ class FileCommand extends GeneratorCommand
         // created_at, payed_at
         $stub = str_replace('{{dates}}', $this->getModelDates(), $stub);
 
+        // 'meals_eaten' => 'required|numeric|min:0'
+        // 'pushups_done' => 'reqired|boolean
+        $stub = str_replace('{{request.store.validators}}', $this->getRequestValidators('store'), $stub);
+        
+        // 'meals_eaten' => 'required|numeric|min:0'
+        // 'pushups_done' => 'reqired|boolean
+        $stub = str_replace('{{request.update.validators}}', $this->getRequestValidators('update'), $stub);
+        
+        $stub = str_replace('{{index.request}}', $this->getRequestNamespace($name, 'Index'), $stub);
+
         return $stub;
+    }
+
+    protected function getRequestNamespace($name, $requestType)
+    {
+        return implode('\\', array_map("ucfirst", explode('.', $name))) .'\\' . $this->getModelName() . $requestType . 'Request';
     }
 
     /**
@@ -349,6 +364,64 @@ class FileCommand extends GeneratorCommand
             }
         }
         return implode(', ', $datesArray);
+    }
+
+    protected function getRequestValidators($requestType = 'store')
+    {
+        $validators = [];
+        $schemaArray = explode(', ', $this->optionSchema());
+        $schema = collect();
+        foreach($schemaArray as $schemaElement){
+            $schemaElements = collect(explode(':', $schemaElement));
+            $schema->push(collect([
+                'attribute' => $schemaElements->shift(),
+                'row_settings' => $schemaElements
+                ]));
+        }
+
+        if($requestType == 'store'){
+            foreach($schema as $schemaElement){
+                $rowValidators = $this->getRowValidators($schemaElement['row_settings'], $schemaElement['attribute']);
+                $validators[] = '            \'' . $schemaElement['attribute'] . '\' => \'' . $rowValidators . '\'';
+            }
+        }else if($requestType == 'update'){
+            foreach($schema as $schemaElement){
+                $rowValidators = $this->getRowValidators($schemaElement['row_settings'], $schemaElement['attribute']);
+                $validators[] = '            \'' . $schemaElement['attribute'] . '\' => \'' . $rowValidators . '\'';
+            }
+        }else{
+
+        }
+
+        return implode(', ' . PHP_EOL, $validators);
+    }
+
+    private function getRowValidators($rowSettings, $onAttribute){
+        $validators = ['required'];
+        /** this could be setup in config file */
+        $validatorTable = [
+            'string' => [
+                'max:255'
+            ],
+            'unsigned' => [
+                'min:0'
+            ],
+            'unique' => [
+                'unique:' . $this->getTableName($this->getUrl()) . ',' . $onAttribute
+            ],
+            'integer' => [
+                'numeric'
+            ],
+            
+        ];
+        foreach($rowSettings as $rowSetting){
+            if(array_key_exists($rowSetting, $validatorTable)){
+                foreach($validatorTable[$rowSetting] as $rowValidator){
+                    $validators[] = $rowValidator;
+                }
+            }
+        }
+        return implode('|', $validators);
     }
 
     /**

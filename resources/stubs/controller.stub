@@ -5,12 +5,12 @@ namespace {{namespace}};
 use {{rootNamespace}}Models\{{model}};
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use {{index.request}};
-use {{create.request}};
-use {{store.request}};
-use {{edit.request}};
-use {{update.request}};
-use {{destroy.request}};
+use {{rootNamespace}}Http\Requests\{{index.request}};
+use {{rootNamespace}}Http\Requests\{{create.request}};
+use {{rootNamespace}}Http\Requests\{{store.request}};
+use {{rootNamespace}}Http\Requests\{{edit.request}};
+use {{rootNamespace}}Http\Requests\{{update.request}};
+use {{rootNamespace}}Http\Requests\{{destroy.request}};
 
 class {{class}} extends Controller
 {

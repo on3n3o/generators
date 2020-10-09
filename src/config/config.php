@@ -142,10 +142,24 @@ return [
 
     'resource_views' => [
         'view_index'       => 'index',
-        //'view_create'      => 'create',
-        //'view_edit'        => 'edit',
-        'view_show'        => 'show',
-        'view_create_edit' => 'create_edit',
+        // 'view_create'      => 'create',
+        // 'view_edit'        => 'edit',
+        // 'view_show'        => 'show',
+        // 'view_create_edit' => 'create_edit',
+    ],
+
+     /*
+    |--------------------------------------------------------------------------
+    | Resource JS [stub_key | name of the file]
+    |--------------------------------------------------------------------------
+    */
+
+    'resource_js' => [
+        'js_index'       => 'index',
+        // 'view_create'      => 'create',
+        // 'view_edit'        => 'edit',
+        // 'view_show'        => 'show',
+        // 'view_create_edit' => 'create_edit',
     ],
 
      /*
@@ -216,5 +230,6 @@ return [
         'request_update'         => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.update.stub',
         'request_delete'         => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.delete.stub',
         'js'                     => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/js.stub',
+        'js_index'               => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/js.index.stub',
     ]
 ];
