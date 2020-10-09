@@ -218,14 +218,19 @@ class FileCommand extends GeneratorCommand
         $stub = str_replace('{{dates}}', $this->getModelDates(), $stub);
 
         // 'meals_eaten' => 'required|numeric|min:0'
-        // 'pushups_done' => 'reqired|boolean
+        // 'pushups_done' => 'reqired|boolean'
         $stub = str_replace('{{request.store.validators}}', $this->getRequestValidators('store'), $stub);
         
         // 'meals_eaten' => 'required|numeric|min:0'
-        // 'pushups_done' => 'reqired|boolean
+        // 'pushups_done' => 'reqired|boolean'
         $stub = str_replace('{{request.update.validators}}', $this->getRequestValidators('update'), $stub);
         
         $stub = str_replace('{{index.request}}', $this->getRequestNamespace($name, 'Index'), $stub);
+        $stub = str_replace('{{create.request}}', $this->getRequestNamespace($name, 'Create'), $stub);
+        $stub = str_replace('{{store.request}}', $this->getRequestNamespace($name, 'Store'), $stub);
+        $stub = str_replace('{{edit.request}}', $this->getRequestNamespace($name, 'Edit'), $stub);
+        $stub = str_replace('{{update.request}}', $this->getRequestNamespace($name, 'Update'), $stub);
+        $stub = str_replace('{{destroy.request}}', $this->getRequestNamespace($name, 'Destroy'), $stub);
 
         return $stub;
     }
@@ -245,14 +250,14 @@ class FileCommand extends GeneratorCommand
     protected function getNamespace($name, $withApp = true)
     {
         $path = (strlen($this->settings['namespace']) >= 2 ? $this->settings['namespace'] . '\\' : '');
-
+        
         // dont add the default namespace if specified not to in config
         if ($this->settingsDirectoryNamespace() === true) {
-            $path .= str_replace('/', '\\', $this->getArgumentPath());
+            $path .= str_replace('/', '\\', $this->getArgumentPath($this->option('type') == 'request' ? true : false));
         }
-
+        
         $pieces = array_map('ucfirst', explode('/', $path));
-
+        \Log::debug($pieces);
         if($withApp === true){
             if((bool) $this->optionModule()){
                 $namespace = config('generators.defaults.modules_namespace') . $this->optionModule() . '\\' . implode('\\', $pieces);
