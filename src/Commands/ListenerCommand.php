@@ -56,8 +56,16 @@ class ListenerCommand extends GeneratorCommand
         $this->files->put($path, $this->buildClass($this->argumentName()));
 
         // output to console
+        // check if there is an output handler function
+        $output_handler = config('generators.output_path_handler');
         $this->info(ucfirst($this->option('type')) . ' created successfully.');
-        $this->info('- ' . $path);
+        if (is_callable($output_handler)) {
+            // output to console from the user defined function
+            $this->info($output_handler(Str::after($path, '.')));
+        } else {
+            // output to console
+            $this->info('- ' . $path);
+        }
 
         // if we need to run "composer dump-autoload"
         if ($this->settings['dump_autoload'] === true) {
@@ -84,12 +92,12 @@ class ListenerCommand extends GeneratorCommand
             case 'controller':
                 $name = $this->getControllerName($name);
                 break;
-            case 'seed':
-                $name = $this->getSeedName($name);
+            case 'seeder':
+                $name = $this->getSeederName($name);
                 break;
         }
 
-        // overide the name
+        // override the name
         if ($this->option('name')) {
             return $this->option('name') . $this->settings['file_type'];
         }
@@ -172,8 +180,10 @@ class ListenerCommand extends GeneratorCommand
         // event - listeners
         $event = $this->option('event');
 
-        if (!Str::startsWith($event, $this->laravel->getNamespace()) && !Str::startsWith($event,
-                'Illuminate')
+        if (!Str::startsWith($event, $this->laravel->getNamespace()) && !Str::startsWith(
+            $event,
+            'Illuminate'
+        )
         ) {
             $event = $this->laravel->getNamespace() . 'Events\\' . $event;
         }
@@ -221,8 +231,10 @@ class ListenerCommand extends GeneratorCommand
     protected function getUrl($lowercase = true)
     {
         if ($lowercase) {
-            $url = '/' . rtrim(implode('/',
-                    array_map('Str::snake', explode('/', $this->getArgumentPath(true)))), '/');
+            $url = '/' . rtrim(implode(
+                '/',
+                array_map('Str::snake', explode('/', $this->getArgumentPath(true)))
+            ), '/');
             $url = (implode('/', array_map('Str::slug', explode('/', $url))));
 
             return $url;
@@ -237,8 +249,11 @@ class ListenerCommand extends GeneratorCommand
      */
     protected function getClassName()
     {
-        return ucwords(Str::camel(str_replace([$this->settings['file_type']], [''],
-            $this->getFileName())));
+        return ucwords(Str::camel(str_replace(
+            [$this->settings['file_type']],
+            [''],
+            $this->getFileName()
+        )));
     }
 
     /**

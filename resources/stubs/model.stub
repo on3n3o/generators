@@ -24,4 +24,16 @@ class {{class}} extends Model
     protected $dates = [
         {{dates}}
     ];
+    
+    /**
+     * Validation rules for this model
+     */
+    static public $rules = [
+        'store' => [
+            'name' => 'required|min:3|max:255',
+        ]
+        'update' => [
+            'name' => 'required|min:3|max:255',
+        ]
+    ];
 }

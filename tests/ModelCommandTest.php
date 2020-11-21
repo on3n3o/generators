@@ -2,7 +2,7 @@
 
 namespace Bpocallaghan\Generators\Tests;
 
-class GenerateModelTest extends TestCase
+class ModelCommandTest extends TestCase
 {
     /** @test */
     public function generate_model()
@@ -21,5 +21,17 @@ class GenerateModelTest extends TestCase
 
         $this->artisan('generate:model foo --force');
         $this->assertFileExists('app/Models/Foo.php');
+    }
+
+    /** @test */
+    public function generate_model_with_migration()
+    {
+        $this->artisan('generate:model foo --migration');
+        $this->assertFileExists('app/Models/Foo.php');
+        $this->assertFileExists('database/migrations/'. date('Y_m_d_His') .'_create_foos_table.php');
+
+        $this->artisan('generate:model UserComment --migration');
+        $this->assertFileExists('app/Models/UserComment.php');
+        $this->assertFileExists('database/migrations/'. date('Y_m_d_His') .'_create_user_comments_table.php');
     }
 }

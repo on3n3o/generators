@@ -39,7 +39,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
      */
     protected $extraOption = '';
 
-    function __construct(Filesystem $files, Composer $composer)
+    public function __construct(Filesystem $files, Composer $composer)
     {
         parent::__construct($files);
 
@@ -201,10 +201,13 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
      * @param null $name
      * @return string
      */
-    protected function getSeedName($name = null)
+    protected function getSeederName($name = null)
     {
-        return ucwords(Str::camel(str_replace($this->settings['postfix'], '',
-            $this->getCollectionName($name))));
+        return ucwords(Str::camel(str_replace(
+            $this->settings['postfix'],
+            '',
+            $this->getCollectionName($name)
+        )));
     }
 
     /**
@@ -219,7 +222,7 @@ abstract class GeneratorCommand extends LaravelGeneratorCommand
     }
 
     /**
-     * Get the plural uppercase name of the resouce
+     * Get the plural uppercase name of the resource
      * @param null $name
      * @return null|string
      */

@@ -38,7 +38,7 @@ return [
     */
 
     'settings' => [
-        'view'         => [
+        'view' => [
             'path'                => './resources/views/',
             'file_type'           => '.blade.php',
             'directory_format'    => 'strtolower',
@@ -53,7 +53,13 @@ return [
             'dump_autoload'       => false,
             'repository_contract' => false,
         ],
-        'seed'         => ['path' => './database/seeds/', 'postfix' => 'TableSeeder'],
+        'request' => [
+            'namespace'           => '\Http\Requests',
+            'path'                => './app/Http/Requests/',
+            'postfix'             => 'Request',
+            'directory_namespace' => true,
+        ],
+        'seeder' => ['path' => './database/seeders/', 'postfix' => 'TableSeeder'],
         'migration'    => ['path' => './database/migrations/'],
         'notification' => [
             'directory_namespace' => true,
@@ -194,9 +200,10 @@ return [
         'controller_plain'       => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/controller.plain.stub',
         'controller_admin'       => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/controller_admin.stub',
         'controller_repository'  => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/controller_repository.stub',
+        'request'                => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/request.stub',
         'pivot'                  => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/pivot.stub',
-        'seed'                   => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/seed.stub',
-        'seed_plain'             => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/seed.plain.stub',
+        'seeder'                 => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/seeder.stub',
+        'seeder_plain'           => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/seeder.plain.stub',
         'view'                   => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/view.stub',
         'view_index'             => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/view.index.stub',
         'view_indexb4'           => base_path() . '/vendor/bpocallaghan/generators/resources/stubs/view.index.b4.stub',

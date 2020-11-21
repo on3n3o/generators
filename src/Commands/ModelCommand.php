@@ -38,10 +38,8 @@ class ModelCommand extends GeneratorCommand
         parent::handle();
         \Log::debug($this->option('schema'));
         if ($this->option('migration')) {
-            $name = $this->getMigrationName();
-
             $this->call('generate:migration', [
-                'name'     => $name,
+                'name'     => $this->getMigrationName(),
                 '--model'  => false,
                 '--schema' => $this->option('schema'),
                 '--module' => $this->optionModule()
@@ -56,7 +54,12 @@ class ModelCommand extends GeneratorCommand
      */
     private function getMigrationName()
     {
-        return 'create_' . Str::plural(strtolower($this->getArgumentNameOnly())) . '_table';
+        $name = $this->getArgumentNameOnly();
+        $name = preg_replace('/\B([A-Z])/', '_$1', $name);
+        $name = strtolower($name);
+        $name = Str::plural($name);
+
+        return "create_{$name}_table";
     }
 
     /**

@@ -2,23 +2,26 @@
 
 namespace Bpocallaghan\Generators\Commands;
 
-class ControllerCommand extends GeneratorCommand
+class SeederCommand extends GeneratorCommand
 {
     /**
      * The console command name.
+     *
      * @var string
      */
-    protected $name = 'generate:controller';
+    protected $name = 'generate:seeder';
 
     /**
      * The console command description.
+     *
      * @var string
      */
-    protected $description = 'Create a new resource Controller class';
+    protected $description = 'Create a new Database Seeder class';
 
     /**
      * The type of class being generated.
+     *
      * @var string
      */
-    protected $type = 'Controller';
+    protected $type = 'Seeder';
 }

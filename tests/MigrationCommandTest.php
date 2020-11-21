@@ -2,7 +2,7 @@
 
 namespace Bpocallaghan\Generators\Tests;
 
-class GenerateMigrationTest extends TestCase
+class MigrationCommandTest extends TestCase
 {
     /** @test */
     public function generate_migration()
@@ -11,11 +11,11 @@ class GenerateMigrationTest extends TestCase
         $this->assertFileExists('app/Models/User.php');
         $this->assertFileExists('database/migrations/'. date('Y_m_d_His') .'_create_users_table.php');
 
-        $this->artisan('generate:migration create_posts_table');
-        $this->assertFileExists('app/Models/Post.php');
-        $this->assertFileExists('database/migrations/'. date('Y_m_d_His') .'_create_posts_table.php');
+        $this->artisan('generate:migration create_user_comments_table');
+        $this->assertFileExists('app/Models/UserComment.php');
+        $this->assertFileExists('database/migrations/'. date('Y_m_d_His') .'_create_user_comments_table.php');
     }
-    
+
     /** @test */
     public function generate_migration_pivot()
     {

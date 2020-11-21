@@ -1,3 +1,4 @@
+.DS_Store
 .idea
 build
 vendor
@@ -5,3 +6,4 @@ docs
 composer.lock
 .phpunit.result.cache
 tests/temp/database.sqlite
+app/
