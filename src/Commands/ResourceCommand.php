@@ -41,31 +41,26 @@ class ResourceCommand extends GeneratorCommand
         $this->resource = $this->getResourceOnly();
         $this->settings = config('generators.defaults');
 
-        // $this->callServiceProvider();
-        // $this->callModel();
+        $this->callServiceProvider();
+        $this->callRoute('web');
+        $this->callRoute('api');
+        $this->callModel();
         $this->callPolicy();
-        // $this->callView();
-        // $this->callJS();
-        // $this->callRepository();
-        // $this->callController();
-        // $this->callRequest();
-        // $this->callMigration();
-        // $this->callSeeder();
-        // $this->callTest();
-        // $this->callFactory();
-        // $this->callMigrate();
+        $this->callView();
+        $this->callJS();
+        $this->callRepository();
+        $this->callController();
+        $this->callRequest();
+        $this->callMigration();
+        $this->callSeeder();
+        $this->callTest();
+        $this->callFactory();
+        $this->callMigrate();
 
         // confirm dump autoload
-        // if ($this->confirm("Run 'composer dump-autoload'?")) {
-        //     $this->composer->dumpAutoloads();
-        // }
-
-        // $this->info('All Done!');
-        // $this->info('Remember to add ' . "`Route::resource('" . str_replace(
-        //     '_',
-        //     '-',
-        //     $this->getCollectionName()
-        // ) . "', '" . $this->getResourceControllerName() . "');`" . ' in `routes\\web.php`');
+        if ($this->confirm("Run 'composer dump-autoload'?")) {
+            $this->composer->dumpAutoloads();
+        }
     }
 
     /**
@@ -79,6 +74,18 @@ class ResourceCommand extends GeneratorCommand
             }
         }
     }
+
+    /**
+     * Call the generate:route
+     */
+    private function callRoute($type): void
+    {
+        $name = $this->getModelName();
+        if ($this->confirm("Create a $name $type route file?")) {
+            $this->callCommandFile('route', $type);
+        }
+    }
+
 
     /**
      * Call the generate:model command
@@ -106,7 +113,7 @@ class ResourceCommand extends GeneratorCommand
     }
 
     /**
-     * Call the generate:model command
+     * Call the generate:policy command
      */
     private function callPolicy(): void
     {

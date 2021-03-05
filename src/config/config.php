@@ -142,6 +142,9 @@ return [
             'namespace' => '\Policies', 
             'path' => './app/Policies/'
         ],
+        'route' => [
+            'path' => './routes/'
+        ]
     ],
 
     /*
@@ -245,6 +248,7 @@ return [
         'request_delete'         => base_path() . '/vendor/on3n3o/generators/resources/stubs/request.delete.stub',
         'js'                     => base_path() . '/vendor/on3n3o/generators/resources/stubs/js.stub',
         'js_index'               => base_path() . '/vendor/on3n3o/generators/resources/stubs/js.index.stub',
-        'policy'               => base_path() . '/vendor/on3n3o/generators/resources/stubs/policy.stub',
+        'policy'                 => base_path() . '/vendor/on3n3o/generators/resources/stubs/policy.stub',
+        'route'                  => base_path() . '/vendor/on3n3o/generators/resources/stubs/route.web.stub',
     ]
 ];
