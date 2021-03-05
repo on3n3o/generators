@@ -1,0 +1,39 @@
+@extends('layouts.app', ['activePage' => '{{collection}}', 'titlePage' => __('Table {{collection}}')])
+
+@section('content')
+<div class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header card-header-primary">
+						<h4 class="card-title ">{{ __('Table {{collection}}') }}</h4>
+						<p class="card-category">{{ __('Here is a subtitle for this table') }}</p>
+          			</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table">
+								<thead class=" text-primary">
+									<tr>
+{{tableHead}}
+									<tr>
+								</thead>
+								<tbody>
+									@foreach(${{collection}} as ${{resource}})
+										<tr>
+{{tableBody}}
+										</tr>
+									@endforeach
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="card-body">
+					    {{ ${{collection}}->render() }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+@endsection

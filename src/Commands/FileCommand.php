@@ -116,8 +116,8 @@ class FileCommand extends GeneratorCommand
         $withName = (bool) $this->option('name');
 
         $path = $this->settings['path'];
-        
-        if((bool) $this->option('module')){
+
+        if ((bool) $this->option('module')) {
             /**
              * Strip path ./app/ or ./ from path and replace it with modules path
              */
@@ -154,10 +154,10 @@ class FileCommand extends GeneratorCommand
         // Foo
         $stub = str_replace('{{namespaceWithoutApp}}', $this->getNamespace($name, false), $stub);
 
-        if((bool) $this->optionModule()){
+        if ((bool) $this->optionModule()) {
             // Modules\ModuleName
             $stub = str_replace('{{rootNamespace}}', config('generators.defaults.modules_namespace') . $this->optionModule() . '\\', $stub);
-        }else{
+        } else {
             // App\
             $stub = str_replace('{{rootNamespace}}', $this->getLaravel()->getNamespace(), $stub);
         }
@@ -222,11 +222,11 @@ class FileCommand extends GeneratorCommand
         // 'meals_eaten' => 'required|numeric|min:0'
         // 'pushups_done' => 'reqired|boolean'
         $stub = str_replace('{{request.store.validators}}', $this->getRequestValidators('store'), $stub);
-        
+
         // 'meals_eaten' => 'required|numeric|min:0'
         // 'pushups_done' => 'reqired|boolean'
         $stub = str_replace('{{request.update.validators}}', $this->getRequestValidators('update'), $stub);
-        
+
         $stub = str_replace('{{index.request}}', $this->getRequestNamespace($name, 'Index'), $stub);
         $stub = str_replace('{{create.request}}', $this->getRequestNamespace($name, 'Create'), $stub);
         $stub = str_replace('{{store.request}}', $this->getRequestNamespace($name, 'Store'), $stub);
@@ -234,12 +234,47 @@ class FileCommand extends GeneratorCommand
         $stub = str_replace('{{update.request}}', $this->getRequestNamespace($name, 'Update'), $stub);
         $stub = str_replace('{{destroy.request}}', $this->getRequestNamespace($name, 'Destroy'), $stub);
 
+        /**
+         * <th>meals eaten</th>
+         * <th>pushups done</th>
+         */
+        $stub = str_replace('{{tableHead}}', $this->getTableHead(), $stub);
+
+        /**
+         * <td>{{ $resource->meals_eaten }}</td>
+         * <td>{{ $resource->pushups_done }}</td>
+         */
+        $stub = str_replace('{{tableBody}}', $this->getTableBody(), $stub);
         return $stub;
+    }
+
+    protected function getTableHead()
+    {
+        $tableHead = [];
+        $schemaArray = explode(', ', $this->optionSchema());
+        $schema = collect();
+        foreach ($schemaArray as $schemaElement) {
+            $schemaElements = explode(':', $schemaElement);
+            $tableHead[] = $schemaElements[0] ? '										<th>' . str_replace('_', ' ', $schemaElements[0]) . '</th>' : null;
+        }
+        return implode(PHP_EOL, $tableHead);
+    }
+
+    protected function getTableBody()
+    {
+        $tableHead = [];
+        $schemaArray = explode(', ', $this->optionSchema());
+        $schema = collect();
+        foreach ($schemaArray as $schemaElement) {
+            $schemaElements = explode(':', $schemaElement);
+            $tableHead[] = $schemaElements[0] ? '											<td>{{ $'. $this->resource .'->' . $schemaElements[0] . ' }}</td>' : null;
+        }
+        return implode(PHP_EOL, $tableHead);
     }
 
     protected function getRequestNamespace($name, $requestType)
     {
-        return implode('\\', array_map("ucfirst", explode('.', $name))) .'\\' . $this->getModelName() . $requestType . 'Request';
+        return implode('\\', array_map("ucfirst", explode('.', $name))) . '\\' . $this->getModelName() . $requestType . 'Request';
     }
 
     /**
@@ -252,21 +287,20 @@ class FileCommand extends GeneratorCommand
     protected function getNamespace($name, $withApp = true)
     {
         $path = (strlen($this->settings['namespace']) >= 2 ? $this->settings['namespace'] . '\\' : '');
-        
+
         // dont add the default namespace if specified not to in config
         if ($this->settingsDirectoryNamespace() === true) {
             $path .= str_replace('/', '\\', $this->getArgumentPath($this->option('type') == 'request' ? true : false));
         }
-        
+
         $pieces = array_map('ucfirst', explode('/', $path));
-        \Log::debug($pieces);
-        if($withApp === true){
-            if((bool) $this->optionModule()){
+        if ($withApp === true) {
+            if ((bool) $this->optionModule()) {
                 $namespace = config('generators.defaults.modules_namespace') . $this->optionModule() . '\\' . implode('\\', $pieces);
-            }else{
+            } else {
                 $namespace = $this->getLaravel()->getNamespace() . implode('\\', $pieces);
             }
-        }else{
+        } else {
             $namespace = implode('\\', $pieces);
         }
 
@@ -313,9 +347,9 @@ class FileCommand extends GeneratorCommand
     {
         $fillableArray = [];
         $schemaArray = explode(', ', $this->optionSchema());
-        foreach($schemaArray as $schemaElement){
+        foreach ($schemaArray as $schemaElement) {
             $schemaElement = explode(':', $schemaElement);
-            if(isset($schemaElement[0])){
+            if (isset($schemaElement[0])) {
                 $fillableArray[] = '\'' . $schemaElement[0] . '\'';
             }
         }
@@ -344,14 +378,14 @@ class FileCommand extends GeneratorCommand
             'unsignedSmallInteger' => 'integer',
             'unsignedTinyInteger' => 'integer',
         ];
-        
+
         $castsArray = [];
         $schemaArray = explode(', ', $this->optionSchema());
-        foreach($schemaArray as $schemaElement){
+        foreach ($schemaArray as $schemaElement) {
             $schemaElement = explode(':', $schemaElement);
-            if(isset($schemaElement[0]) && isset($schemaElement[1])){
+            if (isset($schemaElement[0]) && isset($schemaElement[1])) {
                 $columnType = explode(',', $schemaElement[1])[0];
-                if(isset($casts[$columnType])){
+                if (isset($casts[$columnType])) {
                     $castsArray[] = '\'' . $schemaElement[0] . '\' => \'' . $casts[$columnType] . '\'';
                 }
             }
@@ -362,15 +396,15 @@ class FileCommand extends GeneratorCommand
     protected function getModelDates()
     {
         $dateCommands = collect([
-            'date', 'dateTime', 'dateTimeTz', 'softDeletes', 'softDeletesTz', 'time', 'timeTz', 'timestamp', 'timestampTz', 'year'
+            'date', 'dateTime', 'dateTimeTz', 'softDeletes', 'softDeletesTz', 'time', 'timeTz', 'timestamp', 'timestampTz', 'year',
         ]);
         $datesArray = [];
         $schemaArray = explode(', ', $this->optionSchema());
-        foreach($schemaArray as $schemaElement){
+        foreach ($schemaArray as $schemaElement) {
             $schemaElement = explode(':', $schemaElement);
-            if(isset($schemaElement[0]) && isset($schemaElement[1])){
+            if (isset($schemaElement[0]) && isset($schemaElement[1])) {
                 $columnType = explode(',', $schemaElement[1])[0];
-                if($dateCommands->contains($columnType)){
+                if ($dateCommands->contains($columnType)) {
                     $datesArray[] = '\'' . $schemaElement[0] . '\'';
                 }
             }
@@ -383,52 +417,53 @@ class FileCommand extends GeneratorCommand
         $validators = [];
         $schemaArray = explode(', ', $this->optionSchema());
         $schema = collect();
-        foreach($schemaArray as $schemaElement){
+        foreach ($schemaArray as $schemaElement) {
             $schemaElements = collect(explode(':', $schemaElement));
             $schema->push(collect([
                 'attribute' => $schemaElements->shift(),
-                'row_settings' => $schemaElements
-                ]));
+                'row_settings' => $schemaElements,
+            ]));
         }
 
-        if($requestType == 'store'){
-            foreach($schema as $schemaElement){
+        if ($requestType == 'store') {
+            foreach ($schema as $schemaElement) {
                 $rowValidators = $this->getRowValidators($schemaElement['row_settings'], $schemaElement['attribute']);
                 $validators[] = '            \'' . $schemaElement['attribute'] . '\' => \'' . $rowValidators . '\'';
             }
-        }else if($requestType == 'update'){
-            foreach($schema as $schemaElement){
+        } else if ($requestType == 'update') {
+            foreach ($schema as $schemaElement) {
                 $rowValidators = $this->getRowValidators($schemaElement['row_settings'], $schemaElement['attribute']);
                 $validators[] = '            \'' . $schemaElement['attribute'] . '\' => \'' . $rowValidators . '\'';
             }
-        }else{
+        } else {
 
         }
 
         return implode(', ' . PHP_EOL, $validators);
     }
 
-    private function getRowValidators($rowSettings, $onAttribute){
+    private function getRowValidators($rowSettings, $onAttribute)
+    {
         $validators = ['required'];
         /** this could be setup in config file */
         $validatorTable = [
             'string' => [
-                'max:255'
+                'max:255',
             ],
             'unsigned' => [
-                'min:0'
+                'min:0',
             ],
             'unique' => [
-                'unique:' . $this->getTableName($this->getUrl()) . ',' . $onAttribute
+                'unique:' . $this->getTableName($this->getUrl()) . ',' . $onAttribute,
             ],
             'integer' => [
-                'numeric'
+                'numeric',
             ],
-            
+
         ];
-        foreach($rowSettings as $rowSetting){
-            if(array_key_exists($rowSetting, $validatorTable)){
-                foreach($validatorTable[$rowSetting] as $rowValidator){
+        foreach ($rowSettings as $rowSetting) {
+            if (array_key_exists($rowSetting, $validatorTable)) {
+                foreach ($validatorTable[$rowSetting] as $rowValidator) {
                     $validators[] = $rowValidator;
                 }
             }
@@ -450,7 +485,7 @@ class FileCommand extends GeneratorCommand
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'The type of file: model, view, controller, migration, seed',
-                'view'
+                'view',
             ],
             // optional for the generate:console
             [
@@ -458,7 +493,7 @@ class FileCommand extends GeneratorCommand
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'The terminal command that should be assigned.',
-                'command:name'
+                'command:name',
             ],
             // optional for the generate:test
             [
@@ -466,7 +501,7 @@ class FileCommand extends GeneratorCommand
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Create a unit test.',
-                'Feature'
+                'Feature',
             ],
         ], parent::getOptions());
     }

@@ -147,10 +147,10 @@ return [
     */
 
     'resource_views' => [
-        'view_index'       => 'index',
-        // 'view_create'      => 'create',
-        // 'view_edit'        => 'edit',
-        // 'view_show'        => 'show',
+        'view_index_black' => 'index',
+        'view_create'      => 'create',
+        'view_edit'        => 'edit',
+        'view_show'        => 'show',
         // 'view_create_edit' => 'create_edit',
     ],
 
@@ -161,7 +161,7 @@ return [
     */
 
     'resource_js' => [
-        'js_index'       => 'index',
+        // 'js_index'       => 'index',
         // 'view_create'      => 'create',
         // 'view_edit'        => 'edit',
         // 'view_show'        => 'show',
@@ -175,13 +175,13 @@ return [
     */
 
     'custom_requests' => [
-        'request_index'       => 'index',
+        // 'request_index'       => 'index',
         // 'request_create'      => 'create',
         'request_store'      => 'store',
         // 'request_show'        => 'show',
         // 'request_edit'        => 'edit',
         'request_update'        => 'update',
-        'request_delete'        => 'destroy',
+        // 'request_delete'        => 'destroy',
     ],
 
     /*
@@ -207,10 +207,11 @@ return [
         'view'                   => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.stub',
         'view_index'             => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.index.stub',
         'view_indexb4'           => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.index.b4.stub',
+        'view_index_black'       => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.index.black.stub',
         'view_show'              => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.show.stub',
         'view_showb4'            => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.show.b4.stub',
-        //'view_create'            => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.create.stub',
-        //'view_edit'              => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.edit.stub',
+        'view_create'            => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.create.stub',
+        'view_edit'              => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.edit.stub',
         'view_create_edit'       => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.create_edit.stub',
         'view_create_editb4'     => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.create_edit.b4.stub',
         'schema_create'          => base_path() . '/vendor/on3n3o/generators/resources/stubs/schema_create.stub',

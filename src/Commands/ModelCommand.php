@@ -36,7 +36,6 @@ class ModelCommand extends GeneratorCommand
     public function handle()
     {
         parent::handle();
-        \Log::debug($this->option('schema'));
         if ($this->option('migration')) {
             $this->call('generate:migration', [
                 'name'     => $this->getMigrationName(),

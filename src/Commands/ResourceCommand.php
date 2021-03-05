@@ -119,7 +119,10 @@ class ResourceCommand extends GeneratorCommand
                     'view',
                     $this->getViewPath($resource),
                     $key . $this->option('view'),
-                    ['--name' => $name]
+                    [
+                        '--name' => $name,
+                        '--schema' => $this->optionSchema(),
+                    ]
                 );
             }
         }
