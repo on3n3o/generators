@@ -41,30 +41,31 @@ class ResourceCommand extends GeneratorCommand
         $this->resource = $this->getResourceOnly();
         $this->settings = config('generators.defaults');
 
-        $this->callServiceProvider();
-        $this->callModel();
-        $this->callView();
-        $this->callJS();
-        $this->callRepository();
-        $this->callController();
-        $this->callRequest();
-        $this->callMigration();
-        $this->callSeeder();
-        $this->callTest();
-        $this->callFactory();
-        $this->callMigrate();
+        // $this->callServiceProvider();
+        // $this->callModel();
+        $this->callPolicy();
+        // $this->callView();
+        // $this->callJS();
+        // $this->callRepository();
+        // $this->callController();
+        // $this->callRequest();
+        // $this->callMigration();
+        // $this->callSeeder();
+        // $this->callTest();
+        // $this->callFactory();
+        // $this->callMigrate();
 
         // confirm dump autoload
-        if ($this->confirm("Run 'composer dump-autoload'?")) {
-            $this->composer->dumpAutoloads();
-        }
+        // if ($this->confirm("Run 'composer dump-autoload'?")) {
+        //     $this->composer->dumpAutoloads();
+        // }
 
-        $this->info('All Done!');
-        $this->info('Remember to add ' . "`Route::resource('" . str_replace(
-            '_',
-            '-',
-            $this->getCollectionName()
-        ) . "', '" . $this->getResourceControllerName() . "');`" . ' in `routes\\web.php`');
+        // $this->info('All Done!');
+        // $this->info('Remember to add ' . "`Route::resource('" . str_replace(
+        //     '_',
+        //     '-',
+        //     $this->getCollectionName()
+        // ) . "', '" . $this->getResourceControllerName() . "');`" . ' in `routes\\web.php`');
     }
 
     /**
@@ -98,7 +99,22 @@ class ResourceCommand extends GeneratorCommand
         }
 
         if ($this->confirm("Create a $name model?")) {
-            $this->callCommandFile('model');
+            $this->callCommandFile('model', null, null, [
+                '--schema' => $this->optionSchema(),
+            ]);
+        }
+    }
+
+    /**
+     * Call the generate:model command
+     */
+    private function callPolicy(): void
+    {
+        $name = $this->getModelName();
+        if ($this->confirm("Create a $name policy?")) {
+            $this->callCommandFile('policy', null, null, [
+                '--schema' => $this->optionSchema(),
+            ]);
         }
     }
 

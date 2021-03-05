@@ -3,12 +3,7 @@
 namespace {{namespace}};
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
-/**
- * Class {{class}}
- * @mixin Builder
- */
 class {{class}} extends Model
 {
     protected $table = '{{table}}';
@@ -24,16 +19,12 @@ class {{class}} extends Model
     protected $dates = [
         {{dates}}
     ];
-    
-    /**
-     * Validation rules for this model
-     */
-    static public $rules = [
-        'store' => [
-            'name' => 'required|min:3|max:255',
-        ]
-        'update' => [
-            'name' => 'required|min:3|max:255',
-        ]
-    ];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->uuid = \Str::uuid();
+        });
+    }
 }

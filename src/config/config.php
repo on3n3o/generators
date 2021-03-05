@@ -138,6 +138,10 @@ return [
             'path'                => './resources/js/',
             'file_type'           => '.js',
         ],
+        'policy' => [
+            'namespace' => '\Policies', 
+            'path' => './app/Policies/'
+        ],
     ],
 
     /*
@@ -147,10 +151,10 @@ return [
     */
 
     'resource_views' => [
-        'view_index_black' => 'index',
-        'view_create'      => 'create',
-        'view_edit'        => 'edit',
-        'view_show'        => 'show',
+        'view_index_black'  => 'index',
+        'view_create_black' => 'create',
+        'view_edit_black'   => 'edit',
+        'view_show'         => 'show',
         // 'view_create_edit' => 'create_edit',
     ],
 
@@ -211,7 +215,9 @@ return [
         'view_show'              => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.show.stub',
         'view_showb4'            => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.show.b4.stub',
         'view_create'            => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.create.stub',
+        'view_create_black'      => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.create.black.stub',
         'view_edit'              => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.edit.stub',
+        'view_edit_black'        => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.edit.black.stub',
         'view_create_edit'       => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.create_edit.stub',
         'view_create_editb4'     => base_path() . '/vendor/on3n3o/generators/resources/stubs/view.create_edit.b4.stub',
         'schema_create'          => base_path() . '/vendor/on3n3o/generators/resources/stubs/schema_create.stub',
@@ -239,5 +245,6 @@ return [
         'request_delete'         => base_path() . '/vendor/on3n3o/generators/resources/stubs/request.delete.stub',
         'js'                     => base_path() . '/vendor/on3n3o/generators/resources/stubs/js.stub',
         'js_index'               => base_path() . '/vendor/on3n3o/generators/resources/stubs/js.index.stub',
+        'policy'               => base_path() . '/vendor/on3n3o/generators/resources/stubs/policy.stub',
     ]
 ];

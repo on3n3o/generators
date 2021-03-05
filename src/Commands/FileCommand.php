@@ -38,6 +38,8 @@ class FileCommand extends GeneratorCommand
                 break;
             case 'model':
                 $name = $this->getModelName();
+            case 'policy':
+                $name = $this->getModelName() . 'Policy';
                 break;
             case 'controller':
                 $name = $this->getControllerName($name);
@@ -245,31 +247,35 @@ class FileCommand extends GeneratorCommand
          * <td>{{ $resource->pushups_done }}</td>
          */
         $stub = str_replace('{{tableBody}}', $this->getTableBody(), $stub);
+
+        /**
+         * <input type="number" min="1" max="100" name="meals_eaten">
+         * <input type="number" min="1" max="100" name="pushups_done">
+         */
+        $stub = str_replace('{{formInputs}}', $this->getFormInputs(), $stub);
+
+
+        $stub = str_replace('{{editFormInputs}}', $this->getEditFormInputs(), $stub);
         return $stub;
     }
 
-    protected function getTableHead()
+    protected function getEditFormInputs()
     {
-        $tableHead = [];
+        $formInputs = [];
         $schemaArray = explode(', ', $this->optionSchema());
-        $schema = collect();
         foreach ($schemaArray as $schemaElement) {
             $schemaElements = explode(':', $schemaElement);
-            $tableHead[] = $schemaElements[0] ? '										<th>' . str_replace('_', ' ', $schemaElements[0]) . '</th>' : null;
+            $formField = $schemaElements[0];
+            $formFieldName = str_replace('_', ' ', $formField);
+            $formInputs[] = "
+                    <div class=\"form-group{{ \$errors->has('$formField') ? ' has-danger' : '' }}\">
+                        <label>{{ __('$formFieldName') }}</label>
+                        <input name=\"$formField\" class=\"form-control{{ \$errors->has('$formField') ? ' is-invalid' : '' }}\" placeholder=\"{{ __('$formFieldName') }}\" value=\"{{ \$$this->resource" . "->$formField }}\">
+                        @include('alerts.feedback', ['field' => '$formField'])
+                    </div>
+            ";
         }
-        return implode(PHP_EOL, $tableHead);
-    }
-
-    protected function getTableBody()
-    {
-        $tableHead = [];
-        $schemaArray = explode(', ', $this->optionSchema());
-        $schema = collect();
-        foreach ($schemaArray as $schemaElement) {
-            $schemaElements = explode(':', $schemaElement);
-            $tableHead[] = $schemaElements[0] ? '											<td>{{ $'. $this->resource .'->' . $schemaElements[0] . ' }}</td>' : null;
-        }
-        return implode(PHP_EOL, $tableHead);
+        return implode(PHP_EOL, $formInputs);
     }
 
     protected function getRequestNamespace($name, $requestType)
@@ -469,6 +475,47 @@ class FileCommand extends GeneratorCommand
             }
         }
         return implode('|', $validators);
+    }
+
+    protected function getTableHead()
+    {
+        $tableHead = [];
+        $schemaArray = explode(', ', $this->optionSchema());
+        foreach ($schemaArray as $schemaElement) {
+            $schemaElements = explode(':', $schemaElement);
+            $tableHead[] = $schemaElements[0] ? '										<th>' . str_replace('_', ' ', $schemaElements[0]) . '</th>' : null;
+        }
+        return implode(PHP_EOL, $tableHead);
+    }
+
+    protected function getTableBody()
+    {
+        $tableHead = [];
+        $schemaArray = explode(', ', $this->optionSchema());
+        foreach ($schemaArray as $schemaElement) {
+            $schemaElements = explode(':', $schemaElement);
+            $tableHead[] = $schemaElements[0] ? '											<td>{{ $'. $this->resource .'->' . $schemaElements[0] . ' }}</td>' : null;
+        }
+        return implode(PHP_EOL, $tableHead);
+    }
+
+    protected function getFormInputs()
+    {
+        $formInputs = [];
+        $schemaArray = explode(', ', $this->optionSchema());
+        foreach ($schemaArray as $schemaElement) {
+            $schemaElements = explode(':', $schemaElement);
+            $formField = $schemaElements[0];
+            $formFieldName = str_replace('_', ' ', $formField);
+            $formInputs[] = "
+                        <div class=\"form-group{{ \$errors->has('$formField') ? ' has-danger' : '' }}\">
+                            <label>{{ __('$formFieldName') }}</label>
+                            <input name=\"$formField\" class=\"form-control{{ \$errors->has('$formField') ? ' is-invalid' : '' }}\" placeholder=\"{{ __('$formFieldName') }}\" value=\"{{ old('$formField', ) }}\">
+                            @include('alerts.feedback', ['field' => '$formField'])
+                        </div>
+            ";
+        }
+        return implode(PHP_EOL, $formInputs);
     }
 
     /**
