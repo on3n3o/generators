@@ -38,6 +38,7 @@ class FileCommand extends GeneratorCommand
                 break;
             case 'model':
                 $name = $this->getModelName();
+                break;
             case 'policy':
                 $name = $this->getModelName() . 'Policy';
                 break;

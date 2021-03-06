@@ -47,7 +47,7 @@ class AddRouteCommand extends FileCommand
 
         // build file and save it at location
         $stub = "
-Route::group(['middleware' => ['auth', 'web']], function () {
+Route::group(['middleware' => ['web', 'auth']], function () {
     Route::resource('{{view}}', \{{rootNamespace}}Http\Controllers\{{class}}Controller::class);
 });
         ";
