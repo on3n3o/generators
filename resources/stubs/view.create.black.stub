@@ -7,7 +7,7 @@
             <div class="card-header">
                 <h5 class="title">{{ __('Create {{resource}}') }}</h5>
             </div>
-            <form method="post" action="{{ route('{{collection}}.store') }}" autocomplete="off">
+            <form method="post" action="{{ route('{{view}}.store') }}" autocomplete="off">
                 <div class="card-body">
                         @csrf
                         @include('alerts.success')

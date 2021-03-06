@@ -13,7 +13,7 @@
 									{{ __('Table {{collection}}') }}
 								</div>
 								<div class="col-4 text-right">
-									<a href="{{ route('{{collection}}.create') }}" class="btn btn-sm btn-primary">Add {{resource}}</a>
+									<a href="{{ route('{{view}}.create') }}" class="btn btn-sm btn-primary">Add {{resource}}</a>
 								</div>
 							</div>
 						</h4>
@@ -38,8 +38,8 @@
 														<i class="fas fa-ellipsis-v"></i>
 													</a>
 													<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-														<a class="dropdown-item" href="{{ route('{{collection}}.edit', ${{resource}}) }}">Edit</a>
-														<a class="dropdown-item" href="{{ route('{{collection}}.edit', ${{resource}}) }}">Delete</a>
+														<a class="dropdown-item" href="{{ route('{{view}}.edit', ${{resource}}) }}">Edit</a>
+														<a class="dropdown-item" href="{{ route('{{view}}.edit', ${{resource}}) }}">Delete</a>
 													</div>
 												</div>
                                     		</td>

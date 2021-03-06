@@ -7,7 +7,7 @@
             <div class="card-header">
                 <h5 class="title">{{ __('Edit {{resource}}') }}</h5>
             </div>
-            <form method="post" action="{{ route('{{collection}}.update', ${{resource}}) }}" autocomplete="off">
+            <form method="post" action="{{ route('{{view}}.update', ${{resource}}) }}" autocomplete="off">
                 <div class="card-body">
                     @csrf
                     @method('put')
