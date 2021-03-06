@@ -44,6 +44,7 @@ class ResourceCommand extends GeneratorCommand
         $this->callServiceProvider();
         $this->callRoute('web');
         $this->callRoute('api');
+        $this->callAddRoute();
         $this->callModel();
         $this->callPolicy();
         $this->callView();
@@ -83,6 +84,20 @@ class ResourceCommand extends GeneratorCommand
         $name = $this->getModelName();
         if ($this->confirm("Create a $name $type route file?")) {
             $this->callCommandFile('route', $type);
+        }
+    }
+
+     /**
+     * Call the generate:route
+     */
+    private function callAddRoute(): void
+    {
+        if ($this->confirm("Add routes to end of a web.php file?")) {
+            $this->callCommand('addroute', $this->argument('resource'), [
+                '--module' => $this->optionModule(),
+                '--type' => 'addroute',
+                '--name' => 'web',
+            ], true);
         }
     }
 
@@ -320,12 +335,12 @@ class ResourceCommand extends GeneratorCommand
      * @param       $name
      * @param array $options
      */
-    private function callCommand($command, $name, $options = []): void
+    private function callCommand($command, $name, $options = [], $overrideForce = false): void
     {
         $options = array_merge($options, [
             'name'    => $name,
             '--plain' => $this->option('plain'),
-            '--force' => $this->option('force')
+            '--force' => $overrideForce ? $overrideForce : $this->option('force')
         ]);
 
         $this->call('generate:' . $command, $options);

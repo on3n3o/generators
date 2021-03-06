@@ -259,25 +259,6 @@ class FileCommand extends GeneratorCommand
         return $stub;
     }
 
-    protected function getEditFormInputs()
-    {
-        $formInputs = [];
-        $schemaArray = explode(', ', $this->optionSchema());
-        foreach ($schemaArray as $schemaElement) {
-            $schemaElements = explode(':', $schemaElement);
-            $formField = $schemaElements[0];
-            $formFieldName = str_replace('_', ' ', $formField);
-            $formInputs[] = "
-                    <div class=\"form-group{{ \$errors->has('$formField') ? ' has-danger' : '' }}\">
-                        <label>{{ __('$formFieldName') }}</label>
-                        <input name=\"$formField\" class=\"form-control{{ \$errors->has('$formField') ? ' is-invalid' : '' }}\" placeholder=\"{{ __('$formFieldName') }}\" value=\"{{ \$$this->resource" . "->$formField }}\">
-                        @include('alerts.feedback', ['field' => '$formField'])
-                    </div>
-            ";
-        }
-        return implode(PHP_EOL, $formInputs);
-    }
-
     protected function getRequestNamespace($name, $requestType)
     {
         return implode('\\', array_map("ucfirst", explode('.', $name))) . '\\' . $this->getModelName() . $requestType . 'Request';
@@ -513,6 +494,25 @@ class FileCommand extends GeneratorCommand
                             <input name=\"$formField\" class=\"form-control{{ \$errors->has('$formField') ? ' is-invalid' : '' }}\" placeholder=\"{{ __('$formFieldName') }}\" value=\"{{ old('$formField', ) }}\">
                             @include('alerts.feedback', ['field' => '$formField'])
                         </div>
+            ";
+        }
+        return implode(PHP_EOL, $formInputs);
+    }
+
+    protected function getEditFormInputs()
+    {
+        $formInputs = [];
+        $schemaArray = explode(', ', $this->optionSchema());
+        foreach ($schemaArray as $schemaElement) {
+            $schemaElements = explode(':', $schemaElement);
+            $formField = $schemaElements[0];
+            $formFieldName = str_replace('_', ' ', $formField);
+            $formInputs[] = "
+                    <div class=\"form-group{{ \$errors->has('$formField') ? ' has-danger' : '' }}\">
+                        <label>{{ __('$formFieldName') }}</label>
+                        <input name=\"$formField\" class=\"form-control{{ \$errors->has('$formField') ? ' is-invalid' : '' }}\" placeholder=\"{{ __('$formFieldName') }}\" value=\"{{ \$$this->resource" . "->$formField }}\">
+                        @include('alerts.feedback', ['field' => '$formField'])
+                    </div>
             ";
         }
         return implode(PHP_EOL, $formInputs);
