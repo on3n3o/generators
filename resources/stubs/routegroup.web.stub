@@ -1,0 +1,4 @@
+
+Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::resource('{{view}}', \{{rootNamespace}}Http\Controllers\{{class}}Controller::class);
+});

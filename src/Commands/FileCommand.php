@@ -257,7 +257,44 @@ class FileCommand extends GeneratorCommand
 
 
         $stub = str_replace('{{editFormInputs}}', $this->getEditFormInputs(), $stub);
+
+        // {{additionalModelBindings:,}} {{additionalUses}}
+        $stub = str_replace('{{additionalUses}}', $this->getAdditionalUses(), $stub);
+        $stub = str_replace('{{additionalModelBindings}}', $this->getAdditionalModelBindings(), $stub);
+        $stub = str_replace('{{additionalModelBindings:,}}', $this->getAdditionalModelBindings(', '), $stub);
+        $stub = str_replace('{{additionalModelCompacts}}', $this->getAdditionalModelCompacts(), $stub);
         return $stub;
+    }
+
+    protected function getAdditionalModelCompacts()
+    {
+        $classNames = $this->argument('name');
+        $classNames = array_map('lcfirst', array_map('Str::singular', array_map('Str::kebab', explode('.', $classNames))));
+        array_pop($classNames);
+        $classNames = array_map(function($className) {return '\'' . $className . '\'';}, $classNames);
+        return count($classNames) > 0 ? ', ' . implode(', ', $classNames) : '';
+    }
+
+    protected function getAdditionalUses()
+    {
+        $classNames = $this->argument('name');
+        $classNames = array_map('Str::ucfirst', array_map('Str::singular', array_map('Str::camel', explode('.', $classNames))));
+        array_pop($classNames);
+        $classNames = array_map(function ($className){
+            return 'use ' . ((bool) $this->optionModule() ? config('generators.defaults.modules_namespace') . $this->optionModule() . '\\' : $this->getLaravel()->getNamespace()) . 'Models\\' . $className . ';';
+        }, $classNames);
+
+        return implode(PHP_EOL, $classNames);
+    }
+    protected function getAdditionalModelBindings($appendAtTheEnd = '')
+    {
+        $classNames = $this->argument('name');
+        $classNames = array_map('Str::ucfirst', array_map('Str::singular', array_map('Str::camel', explode('.', $classNames))));
+        array_pop($classNames);
+
+        $returnString = implode(', ', array_map(function($className) { return $className . ' $' . lcfirst(Str::kebab($className)); }, $classNames));
+
+        return count($classNames) > 0 ? $returnString . $appendAtTheEnd : '';
     }
 
     protected function getRequestNamespace($name, $requestType)

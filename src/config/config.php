@@ -253,6 +253,6 @@ return [
         'js_index'               => base_path() . '/vendor/on3n3o/generators/resources/stubs/js.index.stub',
         'policy'                 => base_path() . '/vendor/on3n3o/generators/resources/stubs/policy.stub',
         'route'                  => base_path() . '/vendor/on3n3o/generators/resources/stubs/route.web.stub',
-        'addroute'               => base_path() . '/vendor/on3n3o/generators/resources/stubs/route.web.stub',
+        'addroute'               => base_path() . '/vendor/on3n3o/generators/resources/stubs/routegroup.web.stub',
     ]
 ];

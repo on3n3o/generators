@@ -46,12 +46,7 @@ class AddRouteCommand extends FileCommand
         $this->makeDirectory($path);
 
         // build file and save it at location
-        $stub = "
-Route::group(['middleware' => ['web', 'auth']], function () {
-    Route::resource('{{view}}', \{{rootNamespace}}Http\Controllers\{{class}}Controller::class);
-});
-        ";
-
+        $stub = $this->files->get(config('generators.stubs.addroute'));
         $stub = str_replace('{{view}}', $this->getViewPath($this->getUrl(false)), $stub);
         if ((bool) $this->optionModule()) {
             // Modules\ModuleName
@@ -73,11 +68,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
      */
     protected function getClassName()
     {
-        return ucwords(Str::camel(str_replace(
-            [$this->settings['file_type']],
-            [''],
-            Str::plural($this->resource)
-        )));
+        $className = $this->argument('name');
+        $className = implode('\\', array_map('Str::plural', explode('.', $className)));
+        return ucwords($className, '\\');
     }
 
 }
