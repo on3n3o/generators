@@ -15,6 +15,7 @@ class {{class}} extends Controller
 	 */
 	public function index({{additionalModelBindings}})
 	{
+		$this->authorize('viewAny', {{model}}::class);
 		${{collection}} = {{model}}::paginate();
 		return view('{{module}}::{{viewPath}}.index', compact('{{collection}}'{{additionalModelCompacts}}));
 	}
@@ -24,6 +25,7 @@ class {{class}} extends Controller
 	 */
 	public function create({{additionalModelBindings}})
 	{
+		$this->authorize('create', {{model}}::class);
 		return view('{{module}}::{{viewPath}}.create');
 	}
 
@@ -32,6 +34,7 @@ class {{class}} extends Controller
 	 */
 	public function store({{additionalModelBindings:,}}{{model}}StoreRequest $request)
 	{
+		$this->authorize('create', {{model}}::class);
 		${{resource}} = {{model}}::create($request->validated());
 		return response()->json(['status' => 'ok', 'message' => 'created', 'id' => ${{resource}}->id]);
 	}
@@ -43,6 +46,7 @@ class {{class}} extends Controller
 	 */
 	public function show({{additionalModelBindings:,}}{{model}} ${{resource}})
 	{
+		$this->authorize('view', ${{resource}});
 		return view('{{module}}::{{viewPath}}.show', compact('{{resource}}'));
 	}
 
@@ -53,6 +57,8 @@ class {{class}} extends Controller
      */
     public function edit({{additionalModelBindings:,}}{{model}} ${{resource}})
 	{
+		$this->authorize('update', ${{resource}});
+
 		return view('{{module}}::{{viewPath}}.edit', compact('{{resource}}'));
 	}
 
@@ -63,6 +69,8 @@ class {{class}} extends Controller
      */
     public function update({{additionalModelBindings:,}}{{model}}UpdateRequest $request, {{model}} ${{resource}})
 	{
+		$this->authorize('update', ${{resource}});
+
 		${{resource}}->update($request->validated());
 		return response()->json(['status' => 'ok', 'message' => 'updated', 'id' => ${{resource}}->id]);
 	}
@@ -74,6 +82,8 @@ class {{class}} extends Controller
 	 */
 	public function destroy({{additionalModelBindings:,}}{{model}} ${{resource}})
 	{
+		$this->authorize('delete', ${{resource}});
+
 		$id = ${{resource}}->id;
 		${{resource}}->delete();
 		return response()->json(['status' => 'ok', 'message' => 'destroyed', 'id' => $id]);

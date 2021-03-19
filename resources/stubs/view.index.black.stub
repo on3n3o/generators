@@ -20,7 +20,7 @@
 						<p class="card-category">{{ __('Here is a subtitle for this table') }}</p>
           			</div>
 					<div class="card-body">
-						<div class="table-responsive">
+						<div>
 							<table class="table">
 								<thead class=" text-primary">
 									<tr>
@@ -39,7 +39,7 @@
 													</a>
 													<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
 														<a class="dropdown-item" href="{{ route('{{view}}.edit', ${{resource}}) }}">Edit</a>
-														<a class="dropdown-item" href="{{ route('{{view}}.edit', ${{resource}}) }}">Delete</a>
+														<button class="dropdown-item delete" data-id="{{ ${{resource}}->id }}">Delete</button>
 													</div>
 												</div>
                                     		</td>
@@ -58,3 +58,7 @@
 	</div>
 </div>
 @endsection
+
+@push('js')
+<script type="text/javascript" src="{{ mix('{{jsLink:index}}') }}"></script>
+@endpush

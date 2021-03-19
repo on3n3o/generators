@@ -44,7 +44,10 @@ return [
             'directory_format'    => 'strtolower',
             'directory_namespace' => true
         ],
-        'model'        => ['namespace' => '\Models', 'path' => './app/Models/'],
+        'model'        => [
+            'namespace'           => '\Models', 
+            'path'                => './app/Models/'
+        ],
         'controller'   => [
             'namespace'           => '\Http\Controllers',
             'path'                => './app/Http/Controllers/',
@@ -171,9 +174,9 @@ return [
     */
 
     'resource_js' => [
-        // 'js_index'       => 'index',
-        // 'view_create'      => 'create',
-        // 'view_edit'        => 'edit',
+        'js_index'       => 'index',
+        'js_create'      => 'create',
+        'js_edit'        => 'edit',
         // 'view_show'        => 'show',
         // 'view_create_edit' => 'create_edit',
     ],
@@ -251,6 +254,8 @@ return [
         'request_delete'         => base_path() . '/vendor/on3n3o/generators/resources/stubs/request.delete.stub',
         'js'                     => base_path() . '/vendor/on3n3o/generators/resources/stubs/js.stub',
         'js_index'               => base_path() . '/vendor/on3n3o/generators/resources/stubs/js.index.stub',
+        'js_create'              => base_path() . '/vendor/on3n3o/generators/resources/stubs/js.create.stub',
+        'js_edit'                => base_path() . '/vendor/on3n3o/generators/resources/stubs/js.edit.stub',
         'policy'                 => base_path() . '/vendor/on3n3o/generators/resources/stubs/policy.stub',
         'route'                  => base_path() . '/vendor/on3n3o/generators/resources/stubs/route.web.stub',
         'addroute'               => base_path() . '/vendor/on3n3o/generators/resources/stubs/routegroup.web.stub',

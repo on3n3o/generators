@@ -1,0 +1,27 @@
+$( () => {
+    let Index = () => {
+        var self = this;
+
+        this.init = () => {
+            return this;
+        }
+
+        this.events = () => {
+            $('.save').on('click', (e) => {
+                e.preventDefault();
+                $.ajax({
+                    type: 'post',
+                    data: $('form').serialize(),
+                    success: (data) => {
+                        alert("Success");
+                    },
+                    error: (data) => {
+                        alert("Something went wrong!");
+                    }
+                });
+            })
+            return this;
+        }
+    }
+    new Index().init().events();
+})();

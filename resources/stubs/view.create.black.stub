@@ -32,3 +32,7 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+<script type="text/javascript" src="{{ mix('{{jsLink:create}}') }}"></script>
+@endpush

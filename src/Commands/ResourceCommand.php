@@ -41,6 +41,7 @@ class ResourceCommand extends GeneratorCommand
         $this->resource = $this->getResourceOnly();
         $this->settings = config('generators.defaults');
 
+        $this->callWarningForPSR4();
         $this->callServiceProvider();
         $this->callRoute('web');
         $this->callRoute('api');
@@ -49,6 +50,7 @@ class ResourceCommand extends GeneratorCommand
         $this->callPolicy();
         $this->callView();
         $this->callJS();
+        $this->callMix();
         $this->callRepository();
         $this->callController();
         $this->callRequest();
@@ -56,11 +58,30 @@ class ResourceCommand extends GeneratorCommand
         $this->callSeeder();
         $this->callTest();
         $this->callFactory();
-        $this->callMigrate();
 
         // confirm dump autoload
         if ($this->confirm("Run 'composer dump-autoload'?")) {
             $this->composer->dumpAutoloads();
+        }
+        $this->callMigrate();
+    }
+
+    private function callWarningForPSR4(): void
+    {
+        if ((bool) $this->optionModule()) {
+            $this->comment('If you dont have proper PSR-4 for modules in composer.json like this:');
+            $this->info("
+            \"autoload\": {
+                \"psr-4\": {
+                    \"App\\\": \"app/\",
+                    \"Database\\Factories\\\": \"database/factories/\",
+                    \"Database\\Seeders\\\": \"database/seeders/\",
+                    \"Modules\\\": \"modules/\"    //<---this line!!!
+                }
+            },
+            ");
+            $this->comment('then your modules wont work! Check before going further!');
+            $this->confirm("Yes I've checked!");
         }
     }
 
@@ -69,9 +90,11 @@ class ResourceCommand extends GeneratorCommand
      */
     private function callServiceProvider(): void
     {
-        if((bool) $this->optionModule()){
+        if ((bool) $this->optionModule()) {
             if ($this->confirm("Create a " . $this->optionModule() . "ServiceProvider?")) {
                 $this->callCommandFile('service-provider');
+
+                $this->comment('You still need to apply your ' . $this->optionModule() . "ServiceProvider::class to app.php in 'providers => []'");
             }
         }
     }
@@ -81,13 +104,15 @@ class ResourceCommand extends GeneratorCommand
      */
     private function callRoute($type): void
     {
-        $name = $this->getModelName();
-        if ($this->confirm("Create a $name $type route file?")) {
-            $this->callCommandFile('route', $type);
+        if ((bool) $this->optionModule()) {
+            $name = $this->getModelName();
+            if ($this->confirm("Create a $name $type route file?")) {
+                $this->callCommandFile('route', $type);
+            }
         }
     }
 
-     /**
+    /**
      * Call the generate:route
      */
     private function callAddRoute(): void
@@ -100,7 +125,6 @@ class ResourceCommand extends GeneratorCommand
             ], true);
         }
     }
-
 
     /**
      * Call the generate:model command
@@ -186,6 +210,22 @@ class ResourceCommand extends GeneratorCommand
     }
 
     /**
+     * Add proper routes to webpack.mix.js
+     */
+    private function callMix(): void
+    {
+        if ($this->confirm("Add js files to end of a webpack.mix.js file?")) {
+            $this->callCommand('addjs', $this->argument('resource'), [
+                '--module' => $this->optionModule(),
+                '--type' => 'addjs',
+            ], true);
+
+            $this->comment('You still need to run "npm run dev" or "npm run prod" after!');
+
+        }
+    }
+
+    /**
      * Generate the Repository / Contract Pattern files
      */
     private function callRepository(): void
@@ -213,15 +253,15 @@ class ResourceCommand extends GeneratorCommand
     {
         $name = $this->getResourceControllerName();
 
-        if ($this->confirm("Create a controller ($name) for the $this->resource resource?")) {
+        if ($this->confirm("Create a controller (" . Str::singular($name) . ") for the $this->resource resource?")) {
             $arg = $this->getArgumentResource();
             $name = substr_replace(
                 $arg,
-                Str::plural($this->resource),
+                Str::singular($this->resource),
                 strrpos($arg, $this->resource),
                 strlen($this->resource)
             );
-
+            $name = implode('.', array_map('Str::singular', explode('.', $name)));
             if ($this->repositoryContract) {
                 $this->callCommandFile('controller', $name, 'controller_repository');
             } else {
@@ -236,7 +276,7 @@ class ResourceCommand extends GeneratorCommand
         }
     }
 
-     /**
+    /**
      * Generate the resource custom requests
      */
     private function callRequest(): void
@@ -246,14 +286,11 @@ class ResourceCommand extends GeneratorCommand
             $requests = config('generators.custom_requests');
             foreach ($requests as $key => $name) {
                 $resource = $this->argument('resource');
-                if (Str::contains($resource, '.')) {
-                    $resource = str_replace('.', '/', $resource);
-                }
-
-                $this->callCommandFile('request', null,
+                $resource = implode('.', array_map('Str::singular', explode('.', $resource)));
+                $this->callCommandFile('request', $resource,
                     $key . $this->option('view'), [
                         '--name' => $modelName . ucfirst($name) . 'Request',
-                        '--schema' => $this->optionSchema()
+                        '--schema' => $this->optionSchema(),
                     ]);
             }
         }
@@ -268,7 +305,7 @@ class ResourceCommand extends GeneratorCommand
 
         if ($this->confirm("Create a migration ($name) for the $this->resource resource?")) {
             $this->callCommand('migration', $name, [
-                '--model'  => false,
+                '--model' => false,
                 '--schema' => $this->option('schema'),
                 '--module' => $this->optionModule(),
             ]);
@@ -300,7 +337,7 @@ class ResourceCommand extends GeneratorCommand
 
             // unit test
             $this->call('generate:file', [
-                'name'   => $name,
+                'name' => $name,
                 '--type' => 'test',
                 '--unit' => 'Unit',
                 '--module' => $this->optionModule(),
@@ -338,9 +375,9 @@ class ResourceCommand extends GeneratorCommand
     private function callCommand($command, $name, $options = [], $overrideForce = false): void
     {
         $options = array_merge($options, [
-            'name'    => $name,
+            'name' => $name,
             '--plain' => $this->option('plain'),
-            '--force' => $overrideForce ? $overrideForce : $this->option('force')
+            '--force' => $overrideForce ? $overrideForce : $this->option('force'),
         ]);
 
         $this->call('generate:' . $command, $options);
@@ -357,11 +394,11 @@ class ResourceCommand extends GeneratorCommand
     private function callCommandFile($type, $name = null, $stub = null, $options = []): void
     {
         $this->call('generate:file', array_merge($options, [
-            'name'    => ($name ? $name : $this->argument('resource')),
-            '--type'  => $type,
+            'name' => ($name ? $name : $this->argument('resource')),
+            '--type' => $type,
             '--force' => $this->optionForce(),
             '--plain' => $this->optionPlain(),
-            '--stub'  => ($stub ?: $this->optionStub()),
+            '--stub' => ($stub ?: $this->optionStub()),
             '--module' => $this->optionModule(),
         ]));
     }
@@ -412,7 +449,7 @@ class ResourceCommand extends GeneratorCommand
     private function getResourceControllerName(): string
     {
         return $this->getControllerName(
-            Str::plural($this->resource),
+            Str::singular($this->resource),
             false
         ) . config('generators.settings.controller.postfix');
     }
@@ -453,14 +490,14 @@ class ResourceCommand extends GeneratorCommand
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Specify the stub for the views',
-                null
+                null,
             ],
             [
                 'controller',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Specify the stub for the controller',
-                null
+                null,
             ],
             ['migration', null, InputOption::VALUE_OPTIONAL, 'Optional migration name', null],
             [
@@ -468,7 +505,7 @@ class ResourceCommand extends GeneratorCommand
                 's',
                 InputOption::VALUE_OPTIONAL,
                 'Optional schema to be attached to the migration',
-                null
+                null,
             ],
         ]);
     }

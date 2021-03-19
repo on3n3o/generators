@@ -263,7 +263,25 @@ class FileCommand extends GeneratorCommand
         $stub = str_replace('{{additionalModelBindings}}', $this->getAdditionalModelBindings(), $stub);
         $stub = str_replace('{{additionalModelBindings:,}}', $this->getAdditionalModelBindings(', '), $stub);
         $stub = str_replace('{{additionalModelCompacts}}', $this->getAdditionalModelCompacts(), $stub);
+
+        $stub = str_replace('{{jsLink:index}}', $this->getJavascriptLink('index'), $stub);
+        $stub = str_replace('{{jsLink:create}}', $this->getJavascriptLink('create'), $stub);
+        $stub = str_replace('{{jsLink:edit}}', $this->getJavascriptLink('edit'), $stub);
         return $stub;
+    }
+
+    protected function getJavascriptLink($view = 'index')
+    {
+        $config = config('generators.settings.js');
+
+        $path = '/js/';
+        if ((bool) $this->option('module')) {
+            $path .= str_replace('\\', '/', config('generators.defaults.modules_namespace')) . $this->option('module') . '/';
+        }
+
+        $path .= $this->getArgumentPath(true) . $view . $config['file_type'];
+        
+        return $path;
     }
 
     protected function getAdditionalModelCompacts()
@@ -312,7 +330,6 @@ class FileCommand extends GeneratorCommand
     protected function getNamespace($name, $withApp = true)
     {
         $path = (strlen($this->settings['namespace']) >= 2 ? $this->settings['namespace'] . '\\' : '');
-
         // dont add the default namespace if specified not to in config
         if ($this->settingsDirectoryNamespace() === true) {
             $path .= str_replace('/', '\\', $this->getArgumentPath($this->option('type') == 'request' ? true : false));

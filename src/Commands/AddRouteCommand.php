@@ -69,7 +69,7 @@ class AddRouteCommand extends FileCommand
     protected function getClassName()
     {
         $className = $this->argument('name');
-        $className = implode('\\', array_map('Str::plural', explode('.', $className)));
+        $className = implode('\\', array_map('Str::singular', explode('.', $className)));
         return ucwords($className, '\\');
     }
 

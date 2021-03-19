@@ -1,0 +1,16 @@
+$( () => {
+    let Index = () => {
+        var self = this;
+        this.init = () => {
+            return this;
+        }
+
+        this.events = () => {
+            $('.delete').on('click', (e) => {
+                e.preventDefault();
+            })
+            return this;
+        }
+    }
+    new Index().init().events();
+})();

@@ -3,6 +3,7 @@
 namespace Bpocallaghan\Generators;
 
 use Bpocallaghan\Generators\Commands\AddRouteCommand;
+use Bpocallaghan\Generators\Commands\AddJSCommand;
 use Bpocallaghan\Generators\Commands\ConsoleCommand;
 use Bpocallaghan\Generators\Commands\ContractCommand;
 use Bpocallaghan\Generators\Commands\ControllerCommand;
@@ -92,6 +93,7 @@ class GeneratorsServiceProvider extends ServiceProvider
         $this->registerCommand(ServiceProviderCommand::class, 'service-provider');
 
         $this->registerCommand(AddRouteCommand::class, 'addroute');
+        $this->registerCommand(AddJSCommand::class, 'addjs');
     }
 
     /**

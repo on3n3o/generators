@@ -72,7 +72,7 @@ class PublishCommand extends GeneratorCommand
      */
     private function updateStubsPathsInConfigFile()
     {
-        $updated = str_replace('vendor/bpocallaghan/generators/', '',
+        $updated = str_replace('vendor/on3n3o/generators/', '',
             File::get($this->getConfigPath()));
         File::put($this->getConfigPath(), $updated);
     }
